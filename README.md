@@ -1,9 +1,14 @@
 # SAFT-SF_automated_test_framework
 Projeto base de framework para desenvolvimento de automação de testes WEB(Salesforce lightning) e APIs
 
+![Badge](https://img.shields.io/badge/license-MIT-green)
+![Badge](https://img.shields.io/badge/version-1.0-brightgreen)
+
 <h4 align="center"> 
 	🚧 Status do projeto 🚀 Em Testes...  🚧
 </h4>
+
+
 
 Tabela de conteúdos
 =================
