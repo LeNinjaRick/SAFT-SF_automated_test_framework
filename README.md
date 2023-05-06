@@ -16,7 +16,8 @@ Tabela de conteúdos
       * [Rodando os testes](#-rodando-os-testes)
       * [Funções](#funções)
       * [Funções pré definidas](#funções-pré-definidas-do-gherkin)
-      *  [Funções personalizadas](#funções-simplificadas-e-personalizadas)
+      * [Funções personalizadas](#funções-simplificadas-e-personalizadas)
+      * [Personalizar Codigo](#personalizar-codigo-para-teste)
    * [Tecnologias](#-tecnologias)
    * [Autoria](#autor)
 <!--te-->
@@ -175,6 +176,31 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 <h4 align="left"> Codigo no step definition personalizado:
   <p>
   <img alt="stepSimplificado" title="#stepSimplificado" src="./assets/stepSimplificado.png" />
+    </p>
+</h4>
+
+### Personalizar Codigo para teste:
+ 
+ <p><b> Caso precise personalizar codigo para testar outras aplicações ou funções não cobertas pelo Framework, siga os passos abaixo para melhorar a eficacia dos seus testes personalizados: </b></p>
+ 
+- <b> De acordo com a versão atual do seu Google Chrome, coloque o driver atualizado no diretorio: src/test/resources/drivers </b>
+- <b> Assim que iniciado o driver, ele sera instanciado na classe "ConfigFramework" e será possivel acessa-lo em qualquer parte do codigo atraves do get getBrowser() , para isso, na classe voce precisa colocar extends ConfigFramework, assim como no exemplo abaixo: </b>
+<h4 align="left"> Exemplo de uso do driver getBrowser:
+  <p>
+  <img alt="getBrowserExemplo" title="#getBrowserExemplo" src="./assets/getBrowserExemplo.png" />
+    </p>
+</h4>
+
+
+- Crie seu arquivo <b>Page Objets</b> dentro do diretorio src/main/java/pom;
+- Crie seu arquivo de <b>Actions</b> dentro do diretorio src/main/java/web;
+- Crie seu arquivo de <b>Feature</b> dentro do diretorio src/test/resources/features;
+- Crie seu arquivo de <b>StepDefinition</b> dentro do diretorio src/test/java/stepDefinitions;
+- Para facilitar na navegação do Salesforce, voce pode usar os metodos estaticos de interação padrão do Selenium, colocados na classe: src/main/java/web/ActionUtils.java
+
+<h4 align="left"> Hierarquia de diretorios da aba tests:
+  <p>
+  <img alt="pastas" title="#pastas" src="./assets/pastas.png" />
     </p>
 </h4>
 
