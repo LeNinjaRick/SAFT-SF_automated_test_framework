@@ -8,7 +8,6 @@ public class ConfigFramework {
     public ConfigFramework() {
 
     }
-
     private static WebDriver browser;
     private static Actions browserActions;
 

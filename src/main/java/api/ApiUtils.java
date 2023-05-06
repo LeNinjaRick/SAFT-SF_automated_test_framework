@@ -60,22 +60,6 @@ public class ApiUtils {
 
     public static String authorization;
 
-    public static String getUrl() {
-        return url;
-    }
-
-    public static void setUrl(String url) {
-        ApiUtils.url = url;
-    }
-
-    public static String getRecurso() {
-        return recurso;
-    }
-
-    public static void setRecurso(String recurso) {
-        ApiUtils.recurso = recurso;
-    }
-
     public static String getEndpoint() {
         return endpoint;
     }

@@ -30,25 +30,6 @@ public class Hook {
         abrirBrowser("chrome", options, "sim");
     }
 
-    public static void iniciarApp() {
-        //Hook.iniciarAPP();
-        DesiredCapabilities caps = new DesiredCapabilities();
-        PropertiesManager userMobileCenter = new PropertiesManager("src/test/resources/properties/uftMobile/mobile.properties");
-        caps.setCapability("oauthClientId", userMobileCenter.getProps().getProperty("oauthClientId"));
-        caps.setCapability("oauthClientSecret", userMobileCenter.getProps().getProperty("oauthClientSecret"));
-        caps.setCapability("tenantId", userMobileCenter.getProps().getProperty("tenantId"));
-        caps.setCapability("mcWorkspaceName", userMobileCenter.getProps().getProperty("mcWorkspaceName"));
-        caps.setCapability("udid", userMobileCenter.getProps().getProperty("udid"));
-        caps.setCapability("appPackage", userMobileCenter.getProps().getProperty("appPackage"));
-        caps.setCapability("appActivity", userMobileCenter.getProps().getProperty("appActivity"));
-        caps.setCapability("browserName", "");
-        caps.setCapability("noReset", false);
-        caps.setCapability("platformName", "Android");
-        caps.setCapability("platformVersion", "9");
-        caps.setCapability("automationName", "UiAutomator2");
-        //startMobile(caps);
-    }
-
     @Before
     public void init() {
 
@@ -56,10 +37,6 @@ public class Hook {
 
     @After
     public void cleanUp(Scenario scenario) {
-
         Drivers.closeDriver(ConfigFramework.getBrowser());
-        // closeDriver(getBrowser());
-        //closeDriver(getDesktop());
-        // closeDriver(getMobile());
     }
 }

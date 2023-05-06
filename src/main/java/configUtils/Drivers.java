@@ -41,14 +41,7 @@ public class Drivers extends ConfigFramework {
             if (visivel == "nao") {
                 options.addArguments("headless");
             }
-
             options.setExperimentalOption("prefs", prefs);
-              //options.addArguments("user-data-dir=C:\\Users\\automacao\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Default");
-
-
-            // setup the chromedriver using WebDriverManager
-            //io.github.bonigarcia.wdm.WebDriverManager.chromedriver().setup();
-
             // Create driver object for Chrome
             setBrowser(new ChromeDriver(options));
             getBrowser().manage().window().maximize();
@@ -71,19 +64,14 @@ public class Drivers extends ConfigFramework {
         if (escala.contains("sim")) {
             options.addArguments("-force-device-scale-factor=0.8");
         }
-        //options.addExtensions(new File(ConstantsPath.SALESFORCE_CRX));
 
         options.setExperimentalOption("prefs", prefs);
         options.addArguments("user-data-dir=C:\\Users\\automacao\\AppData\\Local\\Google\\Chrome\\User Data\\Default");
-
-        // setup the chromedriver using WebDriverManager
-        //io.github.bonigarcia.wdm.WebDriverManager.chromedriver().setup();
 
         // Create driver object for Chrome
         setBrowser(new ChromeDriver(options));
         getBrowser().manage().window().maximize();
     }
-
 
     public static void closeDriver(WebDriver driver) {
         if (driver == null) {

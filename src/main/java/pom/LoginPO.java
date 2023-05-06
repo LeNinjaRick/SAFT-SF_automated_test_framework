@@ -13,18 +13,10 @@ public class LoginPO extends ConfigFramework {
     public static final By password = By.id("password");
     //Tela inicial:
     public static final By btnLoginSF = By.id("Login");
-    // valida a organização:
-    public static final By messageSandBox = By.xpath("//*[@id=\"oneHeader\"]//span[normalize-space(.)='Sandbox: TIACC']");
-    // botão app launcher
-    public static final By appLauncher = By.xpath("//*[@id='window']/button");
-    // input de pesquisa de APPs:
-    public static final By searchApp = By.xpath("//input[@placeholder='Search apps and items...']");
-
     public void preencherCampoUser(String user) {
         ActionUtils.isElementoPresente(getBrowser(), username, 15);
         ActionUtils.fillInput(getBrowser(), username, user, 10);
     }
-
     public void preencherCampoPass(String pass) {
         ActionUtils.fillInput(getBrowser(), password, pass, 10);
     }
