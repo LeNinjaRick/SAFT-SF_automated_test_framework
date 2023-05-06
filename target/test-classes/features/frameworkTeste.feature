@@ -64,6 +64,7 @@ Feature: teste framework
     Then espero que o campo "Nome completo" esteja com o valor "Mr Andy Young"
     And espero que o campo "Celular" esteja com o valor "^(.*)$"
     And capture o valor do campo "Celular" e armazene na variavel "varCelular"
+    And capture o valor do campo "departamento" e armazene na variavel "varDepartamento"
     And espero que o campo "Level" esteja com o valor "Primary"
     And edite o campo "Telefone residencial" com o valor da variavel "varCelular"
     And edite o campo "Departamento" com o valor "testeValor"
@@ -103,7 +104,7 @@ Feature: teste framework
   Scenario: teste em portugues de criação e validacao de contas
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
     When criar uma conta de massa de testes
-
+    When criar uma massa de oportunidade
 
   @validaRegistroSimplificado
   Scenario: pesquisar e validar um registro

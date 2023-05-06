@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="365.628">
-<testcase classname="teste framework" name="teste em portugues um fluxo de oportunidade de contrato" time="365.018">
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="371.783">
+<testcase classname="teste framework" name="teste em portugues um fluxo de oportunidade de contrato" time="371.399">
 <system-out><![CDATA[Given que o tempo de espera medio sera de 15 segundos.......................passed
 And que a variavel "varNomeOportunidade" tenha o valor "oportunidade Random".passed
 Given que esteja logado no SalesForce com sucesso com o usuario "CEO".......passed
