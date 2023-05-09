@@ -123,6 +123,8 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
   <img alt="edicao" title="#edicao" src="./assets/edicao.png" />
 </h4>
     
+- <b> And clicar no botao pelo texto "Marcar Fase como concluído(a)" </b> -> clica em qualquer botão atraves do seu texto presente na tela;
+    
 
 #### Funções de salvamento de registros:
 
