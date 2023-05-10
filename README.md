@@ -50,7 +50,7 @@ Tabela de conteúdos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 - [Git](https://git-scm.com)
-- [Java 1.8 ou superior](https://www.java.com/pt-BR/download/ie_manual.jsp?locale=pt_BR)
+- [Java JDK 1.8 ou superior](https://www.oracle.com/br/java/technologies/javase/javase8-archive-downloads.html)
 - Gerenciador de dependencias Maven: [Maven](https://maven.apache.org/)
 - Para configurar o maven e o java, siga os passos do tutorial: [Tutorial Configuração](https://dicasdejava.com.br/como-instalar-o-maven-no-windows/)
 - Além disto é bom ter uma IDE para trabalhar com o código como [Intellij](https://www.jetbrains.com/pt-br/idea/)
