@@ -18,6 +18,7 @@ import static stepDefinitions.WebStepDefinition.*;
 public class APIStepDefinition {
 
     private static List<String> jsonPathArray = new ArrayList<String>();
+    static StringBuilder dataParams = new StringBuilder();
 
     private static List<String> keyNames = new ArrayList<String>();
     private static List<String> keyValues = new ArrayList<String>();
@@ -148,7 +149,22 @@ public class APIStepDefinition {
 
     @Given("que seja definido o header {string} com o valor {string}")
     public void queSejaDefinidoOHeaderComOValor(String headerName, String headerValue) {
-        ApiUtils.createHeaders(headerName, headerValue);
+        PropertiesManager pm = new PropertiesManager("src/test/resources/properties/api.properties");
+        headersNames.add(headerName);
+        headersValues.add(headerValue);
+        String value = headerValue;
+        if (varNameArray.contains(headerValue)) {
+            value = varValueArray.get(varNameArray.indexOf(headerValue));
+            ApiUtils.createHeaders(headerName, value);
+        } else if (varApiNameArray.contains(headerValue)) {
+            value = varApiValuesArray.get(varApiNameArray.indexOf(headerValue));
+            ApiUtils.createHeaders(headerName, value);
+        } else if (pm.getProps().containsKey(headerValue)) {
+            value = pm.getProps().getProperty(headerValue);
+            ApiUtils.createHeaders(headerName, value);
+        } else {
+            ApiUtils.createHeaders(headerName, headerValue);
+        }
     }
 
     @And("simplifique o teste de API")
@@ -156,14 +172,26 @@ public class APIStepDefinition {
         System.out.println("#-------------------------------------------------------------------------------------------#");
         System.out.println("Para criar um Step simplificado dos steps fornecidos de busca e validação de registro, \n crie um step no gherkin de sua preferencia(exemplo: 'Given que seja feito o teste de API de geracao de protocolo') \n e depois no step definition, adicione o codigo abaixo: \n");
         System.out.println("\n *** Adicione o codigo abaixo no metodo de stepDefinition: *** \n");
+        PropertiesManager pm = new PropertiesManager("src/test/resources/properties/api.properties");
         for (int i = 0; i < headersNames.size(); i++) {
-            System.out.println(" Header header" + i + " = new Header(\"" + headersNames.get(i) + "\", \"" + headersValues.get(i) + "\");\n" +
-                    "        ApiUtils.headersList.add(header" + i + ");\n");
+            String value = headersValues.get(i);
+            if (varNameArray.contains(headersValues.get(i))) {
+                System.out.println(" String value = varValueArray.get(varNameArray.indexOf(\"" + headersValues.get(i) + "\"));\n" +
+                        "                ApiUtils.createHeaders(\"" + headersNames.get(i) + "\", value);\n");
+            } else if (varApiNameArray.contains(headersValues.get(i))) {
+                System.out.println(" String value = varApiValuesArray.get(varApiNameArray.indexOf(\"" + headersValues.get(i) + "\"));\n" +
+                        "                ApiUtils.createHeaders(\"" + headersNames.get(i) + "\", value);\n");
+            } else if (pm.getProps().containsKey(headersValues.get(i))) {
+                System.out.println("String value = pm.getProps().getProperty(\"" + headersValues.get(i) + "\");\n" +
+                        "                ApiUtils.createHeaders(\"" + headersNames.get(i) + "\", value);\n");
+            } else {
+                System.out.println("ApiUtils.createHeaders(\"" + headersNames.get(i) + "\", \"" + headersValues.get(i) + "\");");
+            }
         }
         if (getRequestType().equalsIgnoreCase("GET") || getRequestType().equalsIgnoreCase("DELETE")) {
             System.out.println(" RestAssured.useRelaxedHTTPSValidation();\n" +
                     "        Headers header = new Headers(ApiUtils.headersList);\n" +
-                    "        Response response = given().contentType(ContentType.JSON)\n" +
+                    "        Response response = given()\n" +
                     "                .headers(header)\n" +
                     "                .when()." + getRequestType().toLowerCase() + "(\"" + getEndpoint() + "\")\n" +
                     "                .then()\n" +
@@ -173,7 +201,7 @@ public class APIStepDefinition {
         } else {
             System.out.println(" RestAssured.useRelaxedHTTPSValidation();\n" +
                     "        Headers header = new Headers(ApiUtils.headersList);\n" +
-                    "        Response response = given().contentType(ContentType.JSON)\n" +
+                    "        Response response = given()\n" +
                     "                .headers(header)\n" +
                     "                .body(\"" + getBodyJson() + "\")\n" +
                     "                .when()." + getRequestType().toLowerCase() + "(\"" + getEndpoint() + "\")\n" +
@@ -202,5 +230,20 @@ public class APIStepDefinition {
         }
 
         System.out.println("#-------------------------------------------------------------------------------------------#");
+    }
+
+    @And("que seja definido o body parametrizavel com a tag {string} e valor {string}")
+    public void queSejaDefinidoOBodyParametrizavelComATagEValor(String tag, String value) {
+        PropertiesManager pm = new PropertiesManager("src/test/resources/properties/api.properties");
+        if (dataParams.length() > 0 && pm.getProps().containsKey(value)) {
+            dataParams.append("&" + tag + "=" + pm.getProps().getProperty(value));
+        } else if (dataParams.length() == 0 && pm.getProps().containsKey(value)) {
+            dataParams.append(tag + "=" + pm.getProps().getProperty(value));
+        } else if (dataParams.length() == 0) {
+            dataParams.append(tag + "=" + value);
+        } else {
+            dataParams.append("&" + tag + "=" + value);
+        }
+        setBodyJson(dataParams.toString());
     }
 }

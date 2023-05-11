@@ -35,7 +35,8 @@ public class ApiUtils {
 
     public static void setResponse(Response response) {
         ApiUtils.response = response;
-        setResponseBodyJson(response.getBody().prettyPrint());
+        setResponseBodyJson(response.getBody().asPrettyString());
+        //System.out.println("body json:  " + getResponseBodyJson());
     }
 
     public static Response response;
@@ -122,8 +123,6 @@ public class ApiUtils {
 
 
     public static void createHeaders(String headerName, String headerValue) {
-        headersNames.add(headerName);
-        headersValues.add(headerValue);
         Header header = new Header(headerName, headerValue);
         headersList.add(header);
     }
@@ -137,7 +136,7 @@ public class ApiUtils {
     public static void requestGET() {
         RestAssured.useRelaxedHTTPSValidation();
         Headers header = new Headers(headersList);
-        Response response = given().contentType(ContentType.JSON)
+        Response response = given()
                 .headers(header)
                 .when().get(getEndpoint())
                 .then()
@@ -155,7 +154,7 @@ public class ApiUtils {
     public static void requestDELETE() {
         RestAssured.useRelaxedHTTPSValidation();
         Headers header = new Headers(headersList);
-        Response response = given().contentType(ContentType.JSON)
+        Response response = given()
                 .headers(header)
                 .when()
                 .delete(getEndpoint())
@@ -171,7 +170,7 @@ public class ApiUtils {
     public static void requestPOST() {
         RestAssured.useRelaxedHTTPSValidation();
         Headers header = new Headers(headersList);
-        Response response = given().contentType(ContentType.JSON)
+        Response response = given()
                 .headers(header)
                 .body(getBodyJson())
                 .when()
@@ -192,7 +191,7 @@ public class ApiUtils {
     public static void requestPUT() {
         RestAssured.useRelaxedHTTPSValidation();
         Headers header = new Headers(headersList);
-        Response response = given().contentType(ContentType.JSON)
+        Response response = given()
                 .headers(header)
                 .body(getBodyJson())
                 .when()
@@ -212,7 +211,7 @@ public class ApiUtils {
     public static void requestPATCH() {
         RestAssured.useRelaxedHTTPSValidation();
         Headers header = new Headers(headersList);
-        Response response = given().contentType(ContentType.JSON)
+        Response response = given()
                 .headers(header)
                 .body(getBodyJson())
                 .when()
@@ -260,7 +259,6 @@ public class ApiUtils {
      */
     public static void validaResponseCode(String code) {
         String statuscode = String.valueOf(getResponse().getStatusCode());
-        System.out.println("code Rest assured: " + statuscode);
         Assert.assertEquals("O Response code foi diferente do esperado!", code, statuscode);
     }
 
