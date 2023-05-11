@@ -115,8 +115,8 @@ Feature: teste framework
   @testeWorkOrder
   Scenario: pesquisar e validar um registro
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
-    And entrar no frame pelo xpath "//iframe"
-    And voltar para o conteudo fora do frame
+    #And entrar no frame pelo xpath "//iframe"
+    #And voltar para o conteudo fora do frame
    # When acessar o registro hexadecimal "varRegistroWorkOrder" pela url
     When acessar o registro hexadecimal "0WO8b000000fQEFGA2" pela url
     And que esteja logado no SalesForce com sucesso com o usuario "Gerente"

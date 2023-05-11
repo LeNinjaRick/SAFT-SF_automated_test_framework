@@ -31,7 +31,7 @@ public class Drivers extends ConfigFramework {
 
 
     public static void abrirBrowser(String browser, ChromeOptions options, String visivel) {
-        if (getBrowser() != null) {
+        if (getBrowser() == null) {
             if (browser.equalsIgnoreCase("chrome")) {
 
                 Map<String, String> prefs = new HashMap<String, String>();
