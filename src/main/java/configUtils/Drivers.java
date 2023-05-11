@@ -31,23 +31,24 @@ public class Drivers extends ConfigFramework {
 
 
     public static void abrirBrowser(String browser, ChromeOptions options, String visivel) {
+        if (getBrowser() != null) {
+            if (browser.equalsIgnoreCase("chrome")) {
 
-        if (browser.equalsIgnoreCase("chrome")) {
+                Map<String, String> prefs = new HashMap<String, String>();
+                System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/src/test/resources/drivers/chromedriver.exe");
+                prefs.put("binary", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
 
-            Map<String, String> prefs = new HashMap<String, String>();
-            System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/src/test/resources/drivers/chromedriver.exe");
-            prefs.put("binary", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-
-            if (visivel == "nao") {
-                options.addArguments("headless");
+                if (visivel == "nao") {
+                    options.addArguments("headless");
+                }
+                options.setExperimentalOption("prefs", prefs);
+                // Create driver object for Chrome
+                setBrowser(new ChromeDriver(options));
+                getBrowser().manage().window().maximize();
             }
-            options.setExperimentalOption("prefs", prefs);
-            // Create driver object for Chrome
-            setBrowser(new ChromeDriver(options));
-            getBrowser().manage().window().maximize();
-
+        } else {
+            System.out.println("Navegador ja esta aberto!");
         }
-
     }
 
     public static void abrirBrowser(String escala) {

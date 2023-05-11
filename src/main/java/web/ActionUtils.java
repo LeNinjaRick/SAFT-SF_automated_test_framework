@@ -39,6 +39,14 @@ public class ActionUtils extends ConfigFramework {
         return isPresente;
     }
 
+    public static String getAtributteOfWebElement(WebDriver driver, By by, String attribute, int time) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(time));
+        wait.until(ExpectedConditions.presenceOfElementLocated(by));
+        WebElement element = driver.findElement(by);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoViewIfNeeded(true);", element);
+        return element.getAttribute(attribute).toString();
+    }
+
     public static boolean isElementoVisivel(WebDriver driver, By by, int tempoEspera) {
         boolean isVisivel;
         try {

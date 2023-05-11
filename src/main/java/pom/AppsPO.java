@@ -42,6 +42,10 @@ public class AppsPO {
         return By.xpath("//*[@field-label='" + field + "']//slot//*[text()]");
     }
 
+    public By extractTTextFromFieldsSpan(String field) {
+        return By.xpath("//*[contains(@class,\"test-id__field-label\") and text()='" + field + "']//ancestor::div[contains(@class,'slds-form-element_readonly')]//*[contains(@class,'field-value ')]/*[text()]");
+    }
+
     public By createNewObj = By.xpath("//a[@title='New' or @title='Criar' or contains(@title,\"Nova\") or contains(@title,\"Novo\")or contains(@title,\"New\")]");
 
     public By btnSave = By.xpath("//button[text()='Salvar' or text()='Save' or @title='Salvar' or @title='Save']");
@@ -140,7 +144,7 @@ public class AppsPO {
 
     // busca por icones de edição de campos especificos
     public By editFieldInObject(String field) {
-        return By.xpath("//button[@title='Editar " + field + "']");
+        return By.xpath("//button[@title='Editar " + field + "' or @title='Edit " + field + "']");
     }
 
     public By btnListView = By.xpath("//button[@title='Selecionar um modo de exibição de lista' or @title='Select a List View']");

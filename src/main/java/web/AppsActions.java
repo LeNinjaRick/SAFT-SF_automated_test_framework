@@ -4,21 +4,21 @@ import api.ApiUtils;
 import api.RegexMatcher;
 import configUtils.ConfigFramework;
 import configUtils.PropertiesManager;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
 import pom.AppsPO;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
-import java.util.regex.Pattern;
 
+import static configUtils.Drivers.abrirBrowser;
 import static pom.AppsPO.getWait;
 import static web.ActionUtils.*;
 
@@ -153,11 +153,13 @@ public class AppsActions extends ConfigFramework {
 
     public void validateRecordFields(String field, String value) {
         String text;
-        if (isElementoPresente(getBrowser(), appsPO.detailsPage, getWait())) {
+        if (isElementoPresente(getBrowser(), appsPO.detailsPage, (getWait()*3)/2)) {
             clickjs(getBrowser(), appsPO.detailsPage, getWait());
         }
-        if (isElementoPresente(getBrowser(), appsPO.extractTTextFromFields(field), getWait())) {
+        if (isElementoPresente(getBrowser(), appsPO.extractTTextFromFields(field), (getWait()*3)/2)) {
             text = getText(getBrowser(), appsPO.extractTTextFromFields(field), getWait());
+        } else if (isElementoPresente(getBrowser(), appsPO.extractTTextFromFieldsSpan(field), (getWait()*3)/2)) {
+            text = getText(getBrowser(), appsPO.extractTTextFromFieldsSpan(field), getWait());
         } else {
             text = "";
             System.out.println("O campo esta sem valor nenhum no salesforce!");
@@ -172,6 +174,8 @@ public class AppsActions extends ConfigFramework {
         }
         if (isElementoPresente(getBrowser(), appsPO.extractTTextFromFields(field), getWait())) {
             text = getText(getBrowser(), appsPO.extractTTextFromFields(field), getWait());
+        } else if (isElementoPresente(getBrowser(), appsPO.extractTTextFromFieldsSpan(field), getWait())) {
+            text = getText(getBrowser(), appsPO.extractTTextFromFieldsSpan(field), getWait());
         } else {
             text = "";
             System.out.println("O campo esta sem valor nenhum no salesforce!");
@@ -224,5 +228,31 @@ public class AppsActions extends ConfigFramework {
             clickjs(getBrowser(), appsPO.spanFields(text), getWait());
         }
     }
+
+    @Test
+    public void recoverHTMLPageSource() {
+        String userProfile = "C:\\Users\\" + System.getenv("USERNAME") + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\";
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("user-data-dir=" + userProfile);
+        options.addArguments("--start-maximized");
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--disable-web-security");
+        options.addArguments("--disable-notifications");
+        options.addArguments("--disable-session-crashed-bubble");
+        options.addArguments("--enable-popup-blocking");
+        options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--incognito");
+        options.setAcceptInsecureCerts(true);
+        abrirBrowser("chrome", options, "sim");
+
+        String url = pm.getProps().getProperty("urlSalesForce");
+        getBrowser().navigate().to(url);
+        String pageSource = getBrowser().getPageSource();
+
+        System.out.println("page source: \n" + pageSource);
+        String[] substring = pageSource.split("");
+    }
+
 
 }

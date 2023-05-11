@@ -1,6 +1,8 @@
 package stepDefinitions;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import web.AppsActions;
@@ -62,6 +64,7 @@ public class SimplificadoStepDefinition {
 
     @When("criar uma massa de oportunidade")
     public void criarUmaMassaDeOportunidade() {
+
         appsActions.searchApp("Oportunidades");
         appsActions.changeViewMode();
         appsActions.createObject();
@@ -78,6 +81,33 @@ public class SimplificadoStepDefinition {
         appsActions.fillField("Assunto", "teste de caso");
         appsActions.fillField("Status", "Working");
         appsActions.saveObjCreated();
+
+        Assert.assertFalse("Não foi possivel salvar o registro por decorrencia de erro no preenchimento", appsActions.validateErrorsInRecordCreation());
+    }
+
+
+    @And("teste teste")
+    public void testeTeste() {
+
+        appsActions.searchApp("Oportunidades");
+        appsActions.changeViewMode();
+        appsActions.createObject();
+
+        appsActions.fillField("Nome da oportunidade", "oportunidade XbDPg");
+
+        appsActions.clickCheckbox("Particular");
+
+        appsActions.fillField("Data de fechamento", "27/04/2023");
+
+        appsActions.fillField("Fase", "Qualification");
+
+        appsActions.fillField("Nome da conta", "testeConta Bdyxj");
+
+        appsActions.fillField("Delivery/Installation Status", "In progress");
+
+
+        appsActions.saveObjCreated();
+
 
         Assert.assertFalse("Não foi possivel salvar o registro por decorrencia de erro no preenchimento", appsActions.validateErrorsInRecordCreation());
     }

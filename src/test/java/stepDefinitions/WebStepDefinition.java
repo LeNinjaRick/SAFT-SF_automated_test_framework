@@ -21,6 +21,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import static stepDefinitions.APIStepDefinition.varApiNameArray;
+import static stepDefinitions.APIStepDefinition.varApiValuesArray;
 import static web.ActionUtils.clickjs;
 import static web.ActionUtils.isElementoPresente;
 
@@ -32,45 +34,51 @@ public class WebStepDefinition extends ConfigFramework {
     SetupActions setupActions = new SetupActions();
     AppsActions appsActions = new AppsActions();
 
-    List<String> checkboxArray = new ArrayList<>();
-    List<String> actionsRecordArray = new ArrayList<>();
+    private static List<String> checkboxArray = new ArrayList<>();
+    private static List<String> actionsRecordArray = new ArrayList<>();
+    private static List<String> framesArray = new ArrayList<>();
 
-    List<String> fieldsArray = new ArrayList<>();
-    List<String> valuesArray = new ArrayList<>();
+    private static boolean defaultContent;
 
-    String objectSalesforce;
-    String testType;
-
-    public String getTestType() {
-        return testType;
+    private static boolean isDefaultContent() {
+        return defaultContent;
     }
 
-    public void setTestType(String testType) {
-        this.testType = testType;
+    private static void setDefaultContent(boolean defaultContent) {
+        WebStepDefinition.defaultContent = defaultContent;
     }
 
-    List<String> varNameArray = new ArrayList<>();
-    List<String> varValueArray = new ArrayList<>();
+    static List<String> fieldsArray = new ArrayList<>();
+    static List<String> valuesArray = new ArrayList<>();
+
+    static String objectSalesforce;
+    static String testType;
 
 
-    public String getObjectSalesforce() {
+    public static String getObjectSalesforce() {
         return objectSalesforce;
     }
 
-    public void setObjectSalesforce(String objectSalesforce) {
-        this.objectSalesforce = objectSalesforce;
+    public static void setObjectSalesforce(String objectSalesforce) {
+        WebStepDefinition.objectSalesforce = objectSalesforce;
     }
+
+    public static String getTestType() {
+        return testType;
+    }
+
+    public static void setTestType(String testType) {
+        WebStepDefinition.testType = testType;
+    }
+
+    public static List<String> varNameArray = new ArrayList<>();
+    public static List<String> varValueArray = new ArrayList<>();
+
 
     @Given("que esteja logado no SalesForce com sucesso com o usuario {string}")
     public void queEstejaLogadoNoSalesForceComSucessoComOUsuario(String user) {
         Hook.iniciarWeb();
-        WebElement botaoDesativarCookies = (new WebDriverWait(getBrowser(), Duration.ofSeconds(20)))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='cookie-controls-toggle']")));
-        if (botaoDesativarCookies.getAttribute("aria-pressed").equalsIgnoreCase("true")) {
-            By ativaCookie = By.xpath("//*[@id='cookie-controls-toggle']");
-            clickjs(getBrowser(), ativaCookie, 10);
-            Assert.assertEquals("Não foi possivel habilitar os cookies do navegador!", "false", botaoDesativarCookies.getAttribute("aria-pressed"));
-        }
+        SetupActions.controlCookies();
         getBrowser().get(url);
         setupActions.realizarLogin(user);
     }
@@ -151,11 +159,17 @@ public class WebStepDefinition extends ConfigFramework {
                     "        appsActions.changeViewMode();\n" +
                     "        appsActions.createObject();\n");
         }
+        for (int i = 0; i < framesArray.size(); i++) {
+            System.out.println("getBrowser().switchTo().frame(getBrowser().findElement(By.xpath(" + framesArray.get(i) + ")));\n");
+        }
         for (int i = 0; i < fieldsArray.size(); i++) {
             System.out.println("appsActions.fillField(\"" + fieldsArray.get(i) + "\", \"" + valuesArray.get(i) + "\");\n");
             if (checkboxArray.size() > i) {
                 System.out.println("appsActions.clickCheckbox(\"" + checkboxArray.get(i) + "\");\n");
             }
+        }
+        if (isDefaultContent()) {
+            System.out.println("getBrowser().switchTo().defaultContent();\n");
         }
         System.out.println("\n appsActions.saveObjCreated(); \n");
         if (getTestType().equalsIgnoreCase("negativo")) {
@@ -174,8 +188,14 @@ public class WebStepDefinition extends ConfigFramework {
         System.out.println("se for fazer em um novo step definition, crie uma instancia fora do metodo da classe de AppActions: \n  AppsActions appsActions = new AppsActions();\n");
         System.out.println("\n Adicione o codigo abaixo no metodo de stepDefinition: \n");
         System.out.println("\n appsActions.searchAndClickRecord(\"" + getObjectSalesforce() + "\"); \n");
+        for (int i = 0; i < framesArray.size(); i++) {
+            System.out.println("getBrowser().switchTo().frame(getBrowser().findElement(By.xpath(" + framesArray.get(i) + ")));\n");
+        }
         for (int i = 0; i < fieldsArray.size(); i++) {
             System.out.println("appsActions.validateRecordFields(\"" + fieldsArray.get(i) + "\", \"" + valuesArray.get(i) + "\");\n");
+        }
+        if (isDefaultContent()) {
+            System.out.println("getBrowser().switchTo().defaultContent();\n");
         }
         System.out.println("#-------------------------------------------------------------------------------------------#");
     }
@@ -221,7 +241,14 @@ public class WebStepDefinition extends ConfigFramework {
 
     @And("preencher o campo {string} com o valor da variavel {string}")
     public void preencherOCampoComOValorDaVariavel(String field, String variable) {
-        String value = varValueArray.get(varNameArray.indexOf(variable));
+        String value = "";
+        if (varNameArray.contains(variable)) {
+            value = varValueArray.get(varNameArray.indexOf(variable));
+        } else if (varApiNameArray.contains(variable)) {
+            value = varApiValuesArray.get(varApiNameArray.indexOf(variable));
+        } else {
+            Assert.fail("A variavel procurada não foi criada ainda ou não existe!");
+        }
         fieldsArray.add(field);
         valuesArray.add(value);
         appsActions.fillField(field, value);
@@ -234,18 +261,31 @@ public class WebStepDefinition extends ConfigFramework {
 
     }
 
-    @And("criar um novo caso para a oportunidade")
-    public void criarUmNovoCasoParaAOportunidade() {
-        appsActions.executeFlowAction("Novo caso");
-        appsActions.fillField("Nome do contato", "Andy Young");
-        appsActions.fillField("Assunto", "teste de caso");
-        appsActions.fillField("Status", "Working");
-        appsActions.saveObjCreated();
-        Assert.assertFalse("Não foi possivel salvar o registro por decorrencia de erro no preenchimento", appsActions.validateErrorsInRecordCreation());
-    }
-
     @And("clicar no botao pelo texto {string}")
     public void clicarNoBotaoPeloTexto(String text) {
         appsActions.clickByText(text);
+    }
+
+    @When("acessar o registro hexadecimal {string} pela url")
+    public void acessarORegistroHexadecimalPelaUrl(String hexa) {
+        if (varNameArray.contains(hexa)) {
+            getBrowser().get(url + varValueArray.get(varNameArray.indexOf(hexa)));
+        } else if (varApiNameArray.contains(hexa)) {
+            getBrowser().get(url + varApiValuesArray.get(varApiNameArray.indexOf(hexa)));
+        } else {
+            getBrowser().get(url + hexa);
+        }
+    }
+
+    @And("entrar no frame pelo xpath {string}")
+    public void entrarNoFramePeloXpath(String frame) {
+        framesArray.add(frame);
+        getBrowser().switchTo().frame(getBrowser().findElement(By.xpath(frame)));
+    }
+
+    @And("voltar para o conteudo fora do frame")
+    public void voltarParaOConteudoForaDoFrame() {
+        setDefaultContent(true);
+        getBrowser().switchTo().defaultContent();
     }
 }

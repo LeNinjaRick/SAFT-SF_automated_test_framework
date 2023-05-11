@@ -112,21 +112,38 @@ Feature: teste framework
     When valida a conta do Andy
 
 
+  @testeWorkOrder
+  Scenario: pesquisar e validar um registro
+    Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
+    And entrar no frame pelo xpath "//iframe"
+    And voltar para o conteudo fora do frame
+   # When acessar o registro hexadecimal "varRegistroWorkOrder" pela url
+    When acessar o registro hexadecimal "0WO8b000000fQEFGA2" pela url
+    And que esteja logado no SalesForce com sucesso com o usuario "Gerente"
+
+
+
 
     #-----------------------------------------#
   @Teste1
   Scenario: consulta leads hunter
-    Given que seja definido a autorizacao oauth do salesForce
-    Given que seja definido o endpoint como "endpointHunter"
+    Given que seja definido o header "Accept" com o valor "application/json"
+    And que seja definido o endpoint como "endpointHunter"
     When executar uma requisicao GET
     Then espero receber um response code "200"
+    And armazene o valor do campo de response body "data.leads[0].id" na variavel "varNameTeste"
+    And espero que o campo "data.leads[0].id" do response body esteja com o valor de "(\d*)"
+    And simplifique o teste de API
 
 
   @Teste2
   Scenario: cria leads hunter
-    Given que seja definido a autorizacao oauth do salesForce
-    Given que seja definido o endpoint como "endpointHunter"
-    Given que seja definido o payload "testeHunter", aleatorizando os valores "emailName", "firstNameValue" e ""
-    #Given que seja definido o payload "testeHunter"
+    Given que seja definido o header "Accept" com o valor "application/json"
+    And que seja definido o header "Content-Type" com o valor "application/json"
+    And que seja definido o endpoint como "endpointHunter"
+    And que seja definido o payload "testeHunter"
     When executar uma requisicao POST
     Then espero receber um response code "201"
+    And armazene o valor do campo de response body "data.id" na variavel "varNameTeste"
+    And espero que o campo "data.first_name" do response body esteja com o valor de "(.+)"
+    And simplifique o teste de API

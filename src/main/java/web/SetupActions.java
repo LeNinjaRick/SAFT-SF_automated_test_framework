@@ -5,6 +5,8 @@ import configUtils.PropertiesManager;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pom.AppsPO;
 import pom.HomePO;
@@ -21,6 +23,17 @@ import static web.ActionUtils.isElementoPresente;
 public class SetupActions extends ConfigFramework {
 
     AppsPO appsPO = new AppsPO();
+
+    public static void controlCookies() {
+        By botaoDesativarCookies = By.xpath("//*[@id='cookie-controls-toggle']");
+        if (isElementoPresente(getBrowser(), botaoDesativarCookies, 20)) {
+            if (getAtributteOfWebElement(getBrowser(), botaoDesativarCookies, "aria-pressed", 20).equalsIgnoreCase("true")) {
+                By ativaCookie = By.xpath("//*[@id='cookie-controls-toggle']");
+                clickjs(getBrowser(), ativaCookie, 10);
+                Assert.assertEquals("Não foi possivel habilitar os cookies do navegador!", "false", getAtributteOfWebElement(getBrowser(), botaoDesativarCookies, "aria-pressed", 20));
+            }
+        }
+    }
 
     public void realizarLogin(String tipoUsuario) {
         PropertiesManager pm = new PropertiesManager("src/test/resources/properties/salesforce.properties");
