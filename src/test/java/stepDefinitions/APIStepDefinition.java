@@ -203,7 +203,7 @@ public class APIStepDefinition {
                     "        Headers header = new Headers(ApiUtils.headersList);\n" +
                     "        Response response = given()\n" +
                     "                .headers(header)\n" +
-                    "                .body(\"" + getBodyJson() + "\")\n" +
+                    "                .body(\"" + getBodyJson().replace("\"", "\\\"").replaceAll("\\r\\n","") + "\")\n" +
                     "                .when()." + getRequestType().toLowerCase() + "(\"" + getEndpoint() + "\")\n" +
                     "                .then()\n" +
                     "                .extract()\n" +
@@ -244,6 +244,7 @@ public class APIStepDefinition {
         } else {
             dataParams.append("&" + tag + "=" + value);
         }
+
         setBodyJson(dataParams.toString());
     }
 }

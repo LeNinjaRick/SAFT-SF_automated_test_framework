@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="2.797">
-<testcase classname="teste framework" name="cria leads hunter" time="2.631">
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="3.111">
+<testcase classname="teste framework" name="cria leads hunter" time="2.873">
 <system-out><![CDATA[Given que o tempo de espera medio sera de 15 segundos.......................passed
 And que a variavel "varNomeOportunidade" tenha o valor "oportunidade Random".passed
 Given que seja definido o header "Accept" com o valor "application/json"....passed

@@ -96,7 +96,6 @@ Feature: teste framework
   Scenario: teste simplificado em portugues um fluxo de oportunidade de contrato
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
     When criar uma oportunidade em progresso
-    And criar um novo caso para a oportunidade
     Then clicar no botao pelo texto "Marcar Fase como concluído(a)"
 
 
@@ -128,6 +127,7 @@ Feature: teste framework
   @Teste1
   Scenario: consulta leads hunter
     Given que seja definido o header "Accept" com o valor "application/json"
+    Given que seja definido o header "Authorization" com o valor "varAutorizacao"
     And que seja definido o endpoint como "endpointHunter"
     When executar uma requisicao GET
     Then espero receber um response code "200"
@@ -140,6 +140,7 @@ Feature: teste framework
   Scenario: cria leads hunter
     Given que seja definido o header "Accept" com o valor "application/json"
     And que seja definido o header "Content-Type" com o valor "application/json"
+    And que seja definido o body parametrizavel com a tag "" e valor ""
     And que seja definido o endpoint como "endpointHunter"
     And que seja definido o payload "testeHunter"
     When executar uma requisicao POST
