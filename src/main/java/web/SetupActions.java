@@ -24,6 +24,7 @@ public class SetupActions extends ConfigFramework {
 
     AppsPO appsPO = new AppsPO();
 
+
     public static void controlCookies() {
         By botaoDesativarCookies = By.xpath("//*[@id='cookie-controls-toggle']");
         if (isElementoPresente(getBrowser(), botaoDesativarCookies, 20)) {

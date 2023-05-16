@@ -8,6 +8,8 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import stepDefinitions.APIStepDefinition;
+import stepDefinitions.WebStepDefinition;
 
 import static configUtils.Drivers.abrirBrowser;
 
@@ -30,13 +32,31 @@ public class Hook {
         abrirBrowser("chrome", options, "sim");
     }
 
+
+    private static void clearArrays() {
+        WebStepDefinition.varNameArray.clear();
+        WebStepDefinition.varValueArray.clear();
+        WebStepDefinition.fieldsArray.clear();
+        WebStepDefinition.valuesArray.clear();
+        WebStepDefinition.checkboxArray.clear();
+        WebStepDefinition.actionsRecordArray.clear();
+        WebStepDefinition.framesArray.clear();
+        APIStepDefinition.keyNames.clear();
+        APIStepDefinition.keyValues.clear();
+        APIStepDefinition.jsonPathArray.clear();
+        APIStepDefinition.varApiNameArray.clear();
+        APIStepDefinition.varApiValuesArray.clear();
+    }
+
+
     @Before
     public void init() {
-
+        clearArrays();
     }
 
     @After
     public void cleanUp(Scenario scenario) {
+
         Drivers.closeDriver(ConfigFramework.getBrowser());
     }
 }

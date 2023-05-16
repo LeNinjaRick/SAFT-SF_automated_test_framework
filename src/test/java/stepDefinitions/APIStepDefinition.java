@@ -17,11 +17,11 @@ import static stepDefinitions.WebStepDefinition.*;
 
 public class APIStepDefinition {
 
-    private static List<String> jsonPathArray = new ArrayList<String>();
-    static StringBuilder dataParams = new StringBuilder();
+    public static List<String> jsonPathArray = new ArrayList<String>();
+    public static StringBuilder dataParams = new StringBuilder();
 
-    private static List<String> keyNames = new ArrayList<String>();
-    private static List<String> keyValues = new ArrayList<String>();
+    public static List<String> keyNames = new ArrayList<String>();
+    public static List<String> keyValues = new ArrayList<String>();
     public static List<String> varApiNameArray = new ArrayList<String>();
 
     public static List<String> varApiValuesArray = new ArrayList<String>();

@@ -34,9 +34,9 @@ public class WebStepDefinition extends ConfigFramework {
     SetupActions setupActions = new SetupActions();
     AppsActions appsActions = new AppsActions();
 
-    private static List<String> checkboxArray = new ArrayList<>();
-    private static List<String> actionsRecordArray = new ArrayList<>();
-    private static List<String> framesArray = new ArrayList<>();
+    public static List<String> checkboxArray = new ArrayList<>();
+    public static List<String> actionsRecordArray = new ArrayList<>();
+    public static List<String> framesArray = new ArrayList<>();
 
     private static boolean defaultContent;
 
@@ -48,8 +48,8 @@ public class WebStepDefinition extends ConfigFramework {
         WebStepDefinition.defaultContent = defaultContent;
     }
 
-    static List<String> fieldsArray = new ArrayList<>();
-    static List<String> valuesArray = new ArrayList<>();
+    public static List<String> fieldsArray = new ArrayList<>();
+    public static List<String> valuesArray = new ArrayList<>();
 
     static String objectSalesforce;
     static String testType;
