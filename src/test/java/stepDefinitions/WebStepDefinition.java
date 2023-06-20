@@ -14,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pom.AppsPO;
+import pom.AutoMapPO;
 import web.AppsActions;
 import web.SetupActions;
 
@@ -287,5 +288,10 @@ public class WebStepDefinition extends ConfigFramework {
     public void voltarParaOConteudoForaDoFrame() {
         setDefaultContent(true);
         getBrowser().switchTo().defaultContent();
+    }
+
+    @And("mapeei e retorne os comandos para preencher os inputs")
+    public void mapeeiERetorneOsComandosParaPreencherOsInputs() {
+        AutoMapPO.showComandsToFillInput();
     }
 }

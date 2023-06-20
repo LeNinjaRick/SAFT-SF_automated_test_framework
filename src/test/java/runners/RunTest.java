@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"stepDefinitions", "hooks"},
-        tags = "@Teste2",
+        tags = "@webteste2",
         plugin = {
                 "pretty",
                 "html:target/cucumber-reports/cucumber-pretty.html",

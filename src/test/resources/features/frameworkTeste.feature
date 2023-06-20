@@ -22,15 +22,16 @@ Feature: teste framework
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
     #When Accesar o objeto "Casos" e mudar o modo de exibicao da lista para "Meus casos"
     When Accesar o objeto "Contas" e criar um novo registro
-    And preencher o campo "Nome da conta" com o valor "testeConta Random"
-    And preencher o campo "Classificação" com o valor "Hot"
-    And preencher o campo "Conta pai" com o valor "Postman"
-    And preencher o campo "SLA" com o valor "Gold"
-    And preencher o campo "SLA Serial Number" com o valor "1234Random"
-    Then Salvar a criacao do registro com sucesso
-    And simplifique o teste de preenchimento
+    And mapeei e retorne os comandos para preencher os inputs
+    #And preencher o campo "Nome da conta" com o valor "testeConta Random"
+   # And preencher o campo "Classificação" com o valor "Hot"
+   # And preencher o campo "Conta pai" com o valor "Postman"
+   # And preencher o campo "SLA" com o valor "Gold"
+   # And preencher o campo "SLA Serial Number" com o valor "1234Random"
+    #Then Salvar a criacao do registro com sucesso
+   # And simplifique o teste de preenchimento
 
-  @webteste2
+  @webteste2simp
   Scenario: teste simplificado
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
     Given que seja criado o objeto conta predefinido
@@ -51,6 +52,7 @@ Feature: teste framework
   Scenario: teste em portugues de criação de contas com sucesso
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
     When Accesar o objeto "Tarefas" e criar um novo registro
+    And mapeei e retorne os comandos para preencher os inputs
     And preencher o campo "Assunto" com o valor "Call"
     And preencher o campo "Prioridade" com o valor "Low"
     And preencher o campo "Comentários" com o valor "teste comentario"

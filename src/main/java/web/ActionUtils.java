@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActionUtils extends ConfigFramework {
 
@@ -17,18 +19,35 @@ public class ActionUtils extends ConfigFramework {
         driver.manage().window().maximize();
     }
 
-    public static Wait esperaFluente(WebDriver driver, int seconds) {
+    public static List<WebElement> fluentWait(WebDriver driver, By by, int seconds) {
+
         Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                 .withTimeout(Duration.ofSeconds(seconds))
                 .pollingEvery(Duration.ofSeconds(seconds / 2))
-                .ignoring(NoSuchElementException.class);
-        return wait;
+                .ignoring(NoSuchElementException.class)
+                .ignoring(TimeoutException.class);
+        List<WebElement> webElement = new ArrayList<>();
+        if (driver.findElements(by).isEmpty()){
+            System.out.println("Element do not exists");
+        }else {
+            webElement = (wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by)));
+        }
+        return webElement;
     }
 
-    public static boolean isElementoPresente(WebDriver driver, By by, int tempoEspera) {
+
+    public static List<WebElement> implicityWaitList(WebDriver driver, By by,int seconds) {
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(seconds));
+        List<WebElement> webElement = new ArrayList<>();
+        webElement = driver.findElements(by);
+
+        return webElement;
+    }
+
+    public static boolean isElementoPresente(WebDriver driver, By by, int seconds) {
         boolean isPresente;
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(tempoEspera));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
             wait.until(ExpectedConditions.presenceOfElementLocated(by));
             WebElement element = driver.findElement(by);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoViewIfNeeded(true);", element);
