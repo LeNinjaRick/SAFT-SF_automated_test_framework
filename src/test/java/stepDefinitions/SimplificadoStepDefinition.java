@@ -111,4 +111,27 @@ public class SimplificadoStepDefinition {
 
         Assert.assertFalse("Não foi possivel salvar o registro por decorrencia de erro no preenchimento", appsActions.validateErrorsInRecordCreation());
     }
+
+    @And("criar oportunidade")
+    public void criarOportunidade() {
+        appsActions.fillField("Valor", "valorCampo");
+        appsActions.fillField("*Nome da oportunidade", "valorCampo");
+        appsActions.fillField("Próxima etapa", "valorCampo");
+        appsActions.fillField("Probabilidade (%)", "valorCampo");
+        appsActions.fillField("Order Number", "valorCampo");
+        appsActions.fillField("Main Competitor(s)", "valorCampo");
+        appsActions.fillField("Current Generator(s)", "valorCampo");
+        appsActions.fillField("Tracking Number", "valorCampo");
+        appsActions.fillField("Nome da conta", "valorCampo");
+        appsActions.fillField("Origem da campanha principal", "valorCampo");
+        appsActions.fillField("Descrição", "valorCampo");
+        appsActions.fillField("*Data de fechamento", "valorCampo");
+        appsActions.fillField("*Fase", "Prospecting");
+        appsActions.fillField("Tipo", "valorCampo");
+        appsActions.fillField("Origem do lead", "valorCampo");
+        appsActions.fillField("Delivery/Installation Status", "valorCampo");
+        appsActions.clickCheckbox("Particular");
+        appsActions.saveObjCreated();
+        Assert.assertFalse("Não foi possivel salvar o registro por decorrencia de erro no preenchimento", appsActions.validateErrorsInRecordCreation());
+    }
 }

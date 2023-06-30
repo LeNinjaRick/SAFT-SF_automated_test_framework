@@ -38,7 +38,23 @@ public class WebStepDefinition extends ConfigFramework {
     public static List<String> checkboxArray = new ArrayList<>();
     public static List<String> actionsRecordArray = new ArrayList<>();
     public static List<String> framesArray = new ArrayList<>();
-
+    public static List<String> fieldsArray = new ArrayList<>();
+    public static List<String> valuesArray = new ArrayList<>();
+    public static List<String> limpaCheckboxArray(){
+        return checkboxArray = new ArrayList<>();
+    }
+    public static List<String> limpaActionsRecordArray(){
+        return actionsRecordArray = new ArrayList<>();
+    }
+    public static List<String> limpaframesArray(){
+        return framesArray = new ArrayList<>();
+    }
+    public static List<String> limpafieldsArray(){
+        return fieldsArray = new ArrayList<>();
+    }
+    public static List<String> limpavaluesArray(){
+        return valuesArray = new ArrayList<>();
+    }
     private static boolean defaultContent;
 
     private static boolean isDefaultContent() {
@@ -48,10 +64,6 @@ public class WebStepDefinition extends ConfigFramework {
     private static void setDefaultContent(boolean defaultContent) {
         WebStepDefinition.defaultContent = defaultContent;
     }
-
-    public static List<String> fieldsArray = new ArrayList<>();
-    public static List<String> valuesArray = new ArrayList<>();
-
     static String objectSalesforce;
     static String testType;
 

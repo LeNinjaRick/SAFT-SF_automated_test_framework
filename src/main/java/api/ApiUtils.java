@@ -18,12 +18,22 @@ import static io.restassured.RestAssured.given;
 public class ApiUtils {
 
     private static List<String> actionsArray = new ArrayList<>();
-
     public static List<String> headersNames = new ArrayList<>();
     public static List<String> headersValues = new ArrayList<>();
 
     public static List<Header> headersList = new ArrayList<>();
 
+    public static List<String> limparHeadersNames() {
+        return headersNames = new ArrayList<>();
+    }
+
+    public static List<String> limparHeadersValues() {
+        return headersValues = new ArrayList<>();
+    }
+
+    public static List<Header> limparHeadersList() {
+        return headersList = new ArrayList<>();
+    }
 
     public static Response getResponse() {
         return response;
@@ -120,6 +130,7 @@ public class ApiUtils {
 
     public static void createHeaders(String headerName, String headerValue) {
         Header header = new Header(headerName, headerValue);
+        headersList.remove(header);
         headersList.add(header);
     }
 
@@ -139,6 +150,7 @@ public class ApiUtils {
                 .extract()
                 .response();
         setResponse(response);
+        limparHeadersList();
     }
 
     /**
@@ -158,10 +170,14 @@ public class ApiUtils {
                 .extract()
                 .response();
         setResponse(response);
+        limparHeadersList();
     }
 
     /**
-     * Realiza uma requisição do tipo rest-assured usando os valores pre definidos nos steps de given * * Metodo POST * @return void * @author ricardo.vaz.d.junior
+     * Realiza uma requisição do tipo rest-assured usando os valores pre definidos nos steps de given *
+     * * Metodo POST
+     * * @return void
+     * * @author ricardo.vaz.d.junior
      */
     public static void requestPOST() {
         RestAssured.useRelaxedHTTPSValidation();
@@ -175,6 +191,7 @@ public class ApiUtils {
                 .extract()
                 .response();
         setResponse(response);
+        limparHeadersList();
     }
 
 
@@ -185,17 +202,31 @@ public class ApiUtils {
      * * @author ricardo.vaz.d.junior
      */
     public static void requestPUT() {
-        RestAssured.useRelaxedHTTPSValidation();
-        Headers header = new Headers(headersList);
-        Response response = given()
-                .headers(header)
-                .body(getBodyJson())
-                .when()
-                .put(getEndpoint())
-                .then()
-                .extract()
-                .response();
-        setResponse(response);
+        if (getBodyJson()== null) {
+            RestAssured.useRelaxedHTTPSValidation();
+            Headers header = new Headers(headersList);
+            Response response = given()
+                    .headers(header)
+                    .when()
+                    .put(getEndpoint())
+                    .then()
+                    .extract()
+                    .response();
+            setResponse(response);
+        } else {
+            RestAssured.useRelaxedHTTPSValidation();
+            Headers header = new Headers(headersList);
+            Response response = given()
+                    .headers(header)
+                    .body(getBodyJson())
+                    .when()
+                    .put(getEndpoint())
+                    .then()
+                    .extract()
+                    .response();
+            setResponse(response);
+        }
+        limparHeadersList();
     }
 
     /**
@@ -205,17 +236,31 @@ public class ApiUtils {
      * * @author ricardo.vaz.d.junior
      */
     public static void requestPATCH() {
-        RestAssured.useRelaxedHTTPSValidation();
-        Headers header = new Headers(headersList);
-        Response response = given()
-                .headers(header)
-                .body(getBodyJson())
-                .when()
-                .patch(getEndpoint())
-                .then()
-                .extract()
-                .response();
-        setResponse(response);
+        if (getBodyJson()== null) {
+            RestAssured.useRelaxedHTTPSValidation();
+            Headers header = new Headers(headersList);
+            Response response = given()
+                    .headers(header)
+                    .when()
+                    .patch(getEndpoint())
+                    .then()
+                    .extract()
+                    .response();
+            setResponse(response);
+        } else {
+            RestAssured.useRelaxedHTTPSValidation();
+            Headers header = new Headers(headersList);
+            Response response = given()
+                    .headers(header)
+                    .body(getBodyJson())
+                    .when()
+                    .patch(getEndpoint())
+                    .then()
+                    .extract()
+                    .response();
+            setResponse(response);
+        }
+        limparHeadersList();
     }
 
 

@@ -22,19 +22,27 @@ public class AutoMapPO extends ConfigFramework {
     public static By labelsDatePickers = By.xpath("//lightning-datepicker//label[contains(@class,'slds-form-element__label')][text()]");
     public static By labelsCheckBox = By.xpath("//*[@records-recordlayoutcheckbox_recordlayoutcheckbox]//*[text()]");
 
+    public static By labelsVar = By.xpath("//*[contains(@class, 'inputLabel ')]/*[not(contains(text(),'*'))][text()]");
+
+
 
     public static void getTextAndReturn() {
-        List<WebElement> webElementsCombo = ActionUtils.fluentWait(getBrowser(), labelsComboBox, AppsPO.getWait());
-        List<WebElement> webElementsInput = ActionUtils.fluentWait(getBrowser(), labelsInputs, AppsPO.getWait());
-        List<WebElement> webElementsInputSearchObj = ActionUtils.fluentWait(getBrowser(), labelsInputsSearchObj, AppsPO.getWait());
-        List<WebElement> webElementsTextArea = ActionUtils.fluentWait(getBrowser(), labelsTextAreas, AppsPO.getWait());
-        List<WebElement> webElementsDatePicker = ActionUtils.fluentWait(getBrowser(), labelsDatePickers, AppsPO.getWait());
-        List<WebElement> webElementsCheckBox = ActionUtils.fluentWait(getBrowser(), labelsCheckBox, AppsPO.getWait());
+        List<WebElement> webElementsCombo = ActionUtils.fluentWaitArray(getBrowser(), labelsComboBox, AppsPO.getWait());
+        List<WebElement> webElementsInput = ActionUtils.fluentWaitArray(getBrowser(), labelsInputs, AppsPO.getWait());
+        List<WebElement> webElementsInputSearchObj = ActionUtils.fluentWaitArray(getBrowser(), labelsInputsSearchObj, AppsPO.getWait());
+        List<WebElement> webElementsTextArea = ActionUtils.fluentWaitArray(getBrowser(), labelsTextAreas, AppsPO.getWait());
+        List<WebElement> webElementsDatePicker = ActionUtils.fluentWaitArray(getBrowser(), labelsDatePickers, AppsPO.getWait());
+        List<WebElement> webElementsCheckBox = ActionUtils.fluentWaitArray(getBrowser(), labelsCheckBox, AppsPO.getWait());
+        List<WebElement> webElementsVar = ActionUtils.fluentWaitArray(getBrowser(), labelsVar, AppsPO.getWait());
+
         for (int i = 0; webElementsCombo.size() > i; i++) {
             textsCombo.add(webElementsCombo.get(i).getText());
         }
         for (int i = 0; webElementsInput.size() > i; i++) {
             textsInput.add(webElementsInput.get(i).getText());
+        }
+        for (int i = 0; webElementsVar.size() > i; i++) {
+            textsInput.add(webElementsVar.get(i).getText());
         }
         for (int i = 0; webElementsInputSearchObj.size() > i; i++) {
             textsInput.add(webElementsInputSearchObj.get(i).getText());
@@ -62,7 +70,7 @@ public class AutoMapPO extends ConfigFramework {
             System.out.println("appsActions.fillField(\"" + textsCombo.get(i) + "\", \"valorCampo\");");
         }
         for (int i = 0; textsCheckBox.size() > i; i++) {
-            System.out.println(" appsActions.clickCheckbox(\"" + textsCheckBox + "\");");
+            System.out.println(" appsActions.clickCheckbox(\"" + textsCheckBox.get(i) + "\");");
         }
         System.out.println("\nComando para salvar a criação de registro: appsActions.saveObjCreated();\n");
         System.out.println("Caso queira, incremente com um Assert de sucesso na criação: Assert.assertFalse(\"Não foi possivel salvar o registro por decorrencia de erro no preenchimento\", appsActions.validateErrorsInRecordCreation());\n");

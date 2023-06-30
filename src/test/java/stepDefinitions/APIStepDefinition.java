@@ -6,6 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.http.Header;
 import org.json.JSONObject;
 import org.junit.Assert;
 
@@ -25,6 +26,24 @@ public class APIStepDefinition {
     public static List<String> varApiNameArray = new ArrayList<String>();
 
     public static List<String> varApiValuesArray = new ArrayList<String>();
+
+    public static List<String> limparJsonPathArray(){
+        return jsonPathArray = new ArrayList<String>();
+    }
+
+    public static List<String> limpavarKeyValues(){
+        return keyValues = new ArrayList<String>();
+    }
+    public static List<String> limpavarKeyNames(){
+        return keyNames = new ArrayList<String>();
+    }
+
+    public static List<String> limpavarApiValuesArray(){
+        return varApiValuesArray = new ArrayList<String>();
+    }
+    public static List<String> limpavarApiNameArray(){
+        return varApiNameArray = new ArrayList<String>();
+    }
 
     public static String getRequestType() {
         return requestType;
@@ -96,10 +115,9 @@ public class APIStepDefinition {
     }
 
     @Given("^que seja definido o endpoint como \"([^\"]*)\"$")
-    public void queSejaDefinidoOEndpointComo(String arg0) {
+    public void queSejaDefinidoOEndpointComo(String endpoint) {
         PropertiesManager pm = new PropertiesManager("src/test/resources/properties/api.properties");
-        String endpoint = pm.getProps().getProperty(arg0);
-        ApiUtils.setEndpoint(endpoint);
+        ApiUtils.setEndpoint(pm.getProps().getProperty(endpoint));
     }
 
     @Given("^que seja definido o payload \"([^\"]*)\", modificando os valores \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" e \"([^\"]*)\" para \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
@@ -188,29 +206,9 @@ public class APIStepDefinition {
                 System.out.println("ApiUtils.createHeaders(\"" + headersNames.get(i) + "\", \"" + headersValues.get(i) + "\");");
             }
         }
-        if (getRequestType().equalsIgnoreCase("GET") || getRequestType().equalsIgnoreCase("DELETE")) {
-            System.out.println(" RestAssured.useRelaxedHTTPSValidation();\n" +
-                    "        Headers header = new Headers(ApiUtils.headersList);\n" +
-                    "        Response response = given()\n" +
-                    "                .headers(header)\n" +
-                    "                .when()." + getRequestType().toLowerCase() + "(\"" + getEndpoint() + "\")\n" +
-                    "                .then()\n" +
-                    "                .extract()\n" +
-                    "                .response();\n" +
-                    "        ApiUtils.setResponse(response);");
-        } else {
-            System.out.println(" RestAssured.useRelaxedHTTPSValidation();\n" +
-                    "        Headers header = new Headers(ApiUtils.headersList);\n" +
-                    "        Response response = given()\n" +
-                    "                .headers(header)\n" +
-                    "                .body(\"" + getBodyJson().replace("\"", "\\\"").replaceAll("\\r\\n","") + "\")\n" +
-                    "                .when()." + getRequestType().toLowerCase() + "(\"" + getEndpoint() + "\")\n" +
-                    "                .then()\n" +
-                    "                .extract()\n" +
-                    "                .response();\n" +
-                    "        ApiUtils.setResponse(response);");
-
-        }
+        System.out.println("PropertiesManager pm = new PropertiesManager(\"src/test/resources/properties/api.properties\")");
+        System.out.println("ApiUtils.setEndpoint(pm.getProps().getProperty(\""+getEndpoint()+"\"));");
+        System.out.println("ApiUtils.request"+getRequestType().toUpperCase()+"();");
 
         if (!getExpectedCode().isEmpty()) {
             System.out.println("\n ApiUtils.validaResponseCode(\"" + getExpectedCode() + "\");\n");

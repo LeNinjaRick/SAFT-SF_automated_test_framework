@@ -21,8 +21,9 @@ Feature: teste framework
   Scenario: teste em portugues de criação e validacao de contas
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
     #When Accesar o objeto "Casos" e mudar o modo de exibicao da lista para "Meus casos"
-    When Accesar o objeto "Contas" e criar um novo registro
+    When Accesar o objeto "Oportunidades" e criar um novo registro
     And mapeei e retorne os comandos para preencher os inputs
+    And criar oportunidade
     #And preencher o campo "Nome da conta" com o valor "testeConta Random"
    # And preencher o campo "Classificação" com o valor "Hot"
    # And preencher o campo "Conta pai" com o valor "Postman"
@@ -142,7 +143,6 @@ Feature: teste framework
   Scenario: cria leads hunter
     Given que seja definido o header "Accept" com o valor "application/json"
     And que seja definido o header "Content-Type" com o valor "application/json"
-    And que seja definido o body parametrizavel com a tag "" e valor ""
     And que seja definido o endpoint como "endpointHunter"
     And que seja definido o payload "testeHunter"
     When executar uma requisicao POST

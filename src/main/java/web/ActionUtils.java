@@ -19,7 +19,7 @@ public class ActionUtils extends ConfigFramework {
         driver.manage().window().maximize();
     }
 
-    public static List<WebElement> fluentWait(WebDriver driver, By by, int seconds) {
+    public static List<WebElement> fluentWaitArray(WebDriver driver, By by, int seconds) {
 
         Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                 .withTimeout(Duration.ofSeconds(seconds))
@@ -34,6 +34,7 @@ public class ActionUtils extends ConfigFramework {
         }
         return webElement;
     }
+
 
 
     public static List<WebElement> implicityWaitList(WebDriver driver, By by,int seconds) {

@@ -1,17 +1,18 @@
 package hooks;
 
+import api.ApiUtils;
 import configUtils.ConfigFramework;
 import configUtils.Drivers;
-import configUtils.PropertiesManager;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import stepDefinitions.APIStepDefinition;
 import stepDefinitions.WebStepDefinition;
 
+import static configUtils.ConfigFramework.setBrowser;
 import static configUtils.Drivers.abrirBrowser;
+import static stepDefinitions.APIStepDefinition.*;
 
 public class Hook {
 
@@ -46,6 +47,19 @@ public class Hook {
         APIStepDefinition.jsonPathArray.clear();
         APIStepDefinition.varApiNameArray.clear();
         APIStepDefinition.varApiValuesArray.clear();
+        limpavarApiValuesArray();
+        limpavarApiNameArray();
+        limpavarKeyNames();
+        limpavarKeyValues();
+        limparJsonPathArray();
+        ApiUtils.limparHeadersNames();
+        ApiUtils.limparHeadersValues();
+        ApiUtils.limparHeadersList();
+        WebStepDefinition.limpaCheckboxArray();
+        WebStepDefinition.limpaActionsRecordArray();
+        WebStepDefinition.limpafieldsArray();
+        WebStepDefinition.limpaframesArray();
+        WebStepDefinition.limpavaluesArray();
     }
 
 
@@ -56,7 +70,7 @@ public class Hook {
 
     @After
     public void cleanUp(Scenario scenario) {
-
+        setBrowser(null);
         Drivers.closeDriver(ConfigFramework.getBrowser());
     }
 }
