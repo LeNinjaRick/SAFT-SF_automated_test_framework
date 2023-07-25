@@ -114,23 +114,22 @@ public class SimplificadoStepDefinition {
 
     @And("criar oportunidade")
     public void criarOportunidade() {
-        appsActions.fillField("Valor", "valorCampo");
-        appsActions.fillField("*Nome da oportunidade", "valorCampo");
-        appsActions.fillField("Próxima etapa", "valorCampo");
-        appsActions.fillField("Probabilidade (%)", "valorCampo");
-        appsActions.fillField("Order Number", "valorCampo");
-        appsActions.fillField("Main Competitor(s)", "valorCampo");
-        appsActions.fillField("Current Generator(s)", "valorCampo");
-        appsActions.fillField("Tracking Number", "valorCampo");
-        appsActions.fillField("Nome da conta", "valorCampo");
-        appsActions.fillField("Origem da campanha principal", "valorCampo");
-        appsActions.fillField("Descrição", "valorCampo");
-        appsActions.fillField("*Data de fechamento", "valorCampo");
-        appsActions.fillField("*Fase", "Prospecting");
-        appsActions.fillField("Tipo", "valorCampo");
-        appsActions.fillField("Origem do lead", "valorCampo");
-        appsActions.fillField("Delivery/Installation Status", "valorCampo");
         appsActions.clickCheckbox("Particular");
+        appsActions.fillField("Valor", "123");
+        appsActions.fillField("Nome da oportunidade", "teste oportunidade Random ");
+        appsActions.fillField("Próxima etapa", "teste");
+        appsActions.fillField("Order Number", "12344");
+        appsActions.fillField("Main Competitor(s)", "teste");
+        appsActions.fillField("Probabilidade (%)", "20");
+        appsActions.fillField("Current Generator(s)", "teste");
+        appsActions.fillField("Tracking Number", "11111");
+        appsActions.fillField("Nome da conta", "testeConta Bdyxj");
+        appsActions.fillField("Origem da campanha principal", "DM Campaign to Top Customers - Nov 12-23, 2001");
+        appsActions.fillField("Data de fechamento", "12/12/2000");
+        appsActions.fillField("Fase", "Prospecting");
+        appsActions.fillField("Tipo", "testeConta Bdyxj");
+        appsActions.fillField("Origem do lead", "Web");
+        appsActions.fillField("Delivery/Installation Status", "Completed");
         appsActions.saveObjCreated();
         Assert.assertFalse("Não foi possivel salvar o registro por decorrencia de erro no preenchimento", appsActions.validateErrorsInRecordCreation());
     }

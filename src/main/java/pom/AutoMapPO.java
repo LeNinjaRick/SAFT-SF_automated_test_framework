@@ -64,13 +64,13 @@ public class AutoMapPO extends ConfigFramework {
         System.out.println("\n Para preencher os campos da tela de criação de registro atual, use os comandos abaixo e crie seu proprio step definition com os comandos: \n");
         System.out.println("\n*Coloque seus valores em 'valorCampo'*\n");
         for (int i = 0; textsInput.size() > i; i++) {
-            System.out.println("appsActions.fillField(\"" + textsInput.get(i) + "\", \"valorCampo\");");
+            System.out.println("appsActions.fillField(\"" + textsInput.get(i).replace("*","") + "\", \"valorCampo\");");
         }
         for (int i = 0; textsCombo.size() > i; i++) {
-            System.out.println("appsActions.fillField(\"" + textsCombo.get(i) + "\", \"valorCampo\");");
+            System.out.println("appsActions.fillField(\"" + textsCombo.get(i).replace("*","") + "\", \"valorCampo\");");
         }
         for (int i = 0; textsCheckBox.size() > i; i++) {
-            System.out.println(" appsActions.clickCheckbox(\"" + textsCheckBox.get(i) + "\");");
+            System.out.println(" appsActions.clickCheckbox(\"" + textsCheckBox.get(i).replace("*","") + "\");");
         }
         System.out.println("\nComando para salvar a criação de registro: appsActions.saveObjCreated();\n");
         System.out.println("Caso queira, incremente com um Assert de sucesso na criação: Assert.assertFalse(\"Não foi possivel salvar o registro por decorrencia de erro no preenchimento\", appsActions.validateErrorsInRecordCreation());\n");

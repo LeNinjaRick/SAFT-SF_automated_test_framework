@@ -70,7 +70,6 @@ public class Hook {
 
     @After
     public void cleanUp(Scenario scenario) {
-        setBrowser(null);
         Drivers.closeDriver(ConfigFramework.getBrowser());
     }
 }

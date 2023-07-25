@@ -9,10 +9,10 @@ import static web.ActionUtils.clickjs;
 public class LoginPO extends ConfigFramework {
 
     //Logar no SalesForce:
-    public static final By username = By.id("username");
-    public static final By password = By.id("password");
+    public static  By username = By.id("username");
+    public static  By password = By.id("password");
     //Tela inicial:
-    public static final By btnLoginSF = By.id("Login");
+    public static  By btnLoginSF = By.id("Login");
     public void preencherCampoUser(String user) {
         ActionUtils.isElementoPresente(getBrowser(), username, 15);
         ActionUtils.fillInput(getBrowser(), username, user, 10);

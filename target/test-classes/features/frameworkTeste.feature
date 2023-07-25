@@ -21,9 +21,9 @@ Feature: teste framework
   Scenario: teste em portugues de criação e validacao de contas
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
     #When Accesar o objeto "Casos" e mudar o modo de exibicao da lista para "Meus casos"
-    When Accesar o objeto "Oportunidades" e criar um novo registro
+    When Accesar o objeto "Contatos" e criar um novo registro
     And mapeei e retorne os comandos para preencher os inputs
-    And criar oportunidade
+    #And criar oportunidade
     #And preencher o campo "Nome da conta" com o valor "testeConta Random"
    # And preencher o campo "Classificação" com o valor "Hot"
    # And preencher o campo "Conta pai" com o valor "Postman"
