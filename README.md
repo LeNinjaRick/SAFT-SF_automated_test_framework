@@ -5,7 +5,7 @@ Projeto base de framework para desenvolvimento de automação de testes WEB(Sale
 ![Badge](https://img.shields.io/badge/version-1.0-brightgreen)
 
 <h4 align="center"> 
-	🚧 Status do projeto 🚀 Em Testes...  🚧
+	 Status do projeto 🚀 Concluido  
 </h4>
 
 
@@ -42,7 +42,9 @@ Tabela de conteúdos
 - [x] Percorrer fluxos funcionais de atendimento, logistica, gestão de estoque, etc...
 - [x] Validação de qualquer valor de campo, usando regex ou valor assertivo
 - [x] Simplifica o teste criado em 1 linha se necessario criar sub-fluxos ou pre-condições
-- [ ] Geração de relatórios personalizados
+- [X] Automapeamento de telas criação e edição de registros, retornando o codigo necessario no LOG
+- [X] Permite testar APIs usando apenas palavras chaves do gherkin e arquivos .properties
+- [X] Geração de relatórios personalizados
 
 ## Como Usar:
 
@@ -50,7 +52,7 @@ Tabela de conteúdos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 - [Git](https://git-scm.com)
-- [Java JDK 1.8 ou superior](https://www.oracle.com/br/java/technologies/javase/javase8-archive-downloads.html)
+- [Java 11 ou superior](https://www.java.com/pt-BR/download/ie_manual.jsp?locale=pt_BR)
 - Gerenciador de dependencias Maven: [Maven](https://maven.apache.org/)
 - Para configurar o maven e o java, siga os passos do tutorial: [Tutorial Configuração](https://dicasdejava.com.br/como-instalar-o-maven-no-windows/)
 - Além disto é bom ter uma IDE para trabalhar com o código como [Intellij](https://www.jetbrains.com/pt-br/idea/)
@@ -73,12 +75,12 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 
 - Existem funções criadas previamente a partir do Gherkin para facilitar a criação de testes variados no Salesforce Lightning, listadas abaixo:
 
-#### Funções de Wait e gravar variavel:
+### Funções de Wait e gravar variavel:
 
 - <b>Given que o tempo de espera medio sera de 15 segundos</b> -> Define o tempo de espera padrão para encontrar cada elemento do teste, seja no background ou no teste especificado;
 - <b>Given que a variavel "varNomeOportunidade" tenha o valor "oportunidade Random"</b> -> Cria uma variavel a partir do valor desejado, qualquer valor que contenha a palavra "Random" vai ser randomizado em um hexadecimal de 5 caracteres;
 
-#### Função de login:
+### Função de login:
 
 - <b> And que esteja logado no SalesForce com sucesso com o usuario "Gerente"</b> -> Faz o login no salesforce que foi definido no arquivo salesforce.properties junto com as credenciais, devendo elas serem nomeadas da seguinte forma seguindo o exemplo de "Gerente": usernameGerente=valor, passwordGerente=valor
 <h4 align="left"> Arquivo properties:
@@ -87,7 +89,9 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
     </p>
 </h4>
 
-#### Funções de navegação:
+### Funções de navegação:
+
+- <b> And acessar o registro hexadecimal "0WO8b000000fQEFGA2" pela url </b> -> Caso tenha algum Registro fixo que precise acessar em todo teste, coloque nesse metodo e ele ira direcionar a URL diretamente para o registro.(tambem aceita variaveis previamente definidas no gherkin com o valor de hexadecimal)
 
 - <b>When Accesar o objeto "Casos" e mudar o modo de exibicao da lista para "Meus casos"</b> -> Acessa um app e muda a forma de visualização de Lista atraves do texto presente em tela;
 <h4 align="center"> Exemplo de lista de visualização:
@@ -106,7 +110,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 
 
 
-#### Funções de preenchimento de inputs e checkbox:
+### Funções de preenchimento de inputs e checkbox:
 
 - <b> And clicar no checkbox "Particular" </b> -> clica em um checkbox presente na tela atraves de seu texto;
 - <b> And preencher o campo "Nome da oportunidade" com o valor "teste Random" </b> -> Identifica o tipo de campo de input (Texto, comboBox, Data, etc...) e preenche de acordo com o valor colocado. Qualquer valor que contenha a palavra "Random" vai ser randomizado em um hexadecimal de 5 caracteres;
@@ -126,13 +130,14 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 - <b> And clicar no botao pelo texto "Marcar Fase como concluído(a)" </b> -> clica em qualquer botão atraves do seu texto presente na tela;
     
 
-#### Funções de salvamento de registros:
+### Funções de salvamento de registros:
 
 
 - <b> And Salvar a criacao do registro com sucesso </b> -> Salva o registro que estava em preenchimento e valida que o mesmo foi criado sem erros;
 - <b> And Salvar a criacao do registro com falha </b> -> Salva o registro que estava em preenchimento e valida que um erro impediu a criação do registro;
+- <b> And salve a edicao do registro </b> -> Salva o registro que estava em edição;
 
-#### Funções de validação de campos, valores e erros:
+### Funções de validação de campos, valores e erros:
 
 - <b>And busca pela mensagem de erro "Revise os seguintes campos"</b> -> Verifica se uma mensagem de erro foi apresentada na tela;
 <h4 align="left"> Exemplo de mensagem de falha:
@@ -148,9 +153,28 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 </h4>
 
 
-#### Funções de captura de dados em variaveis:
+### Funções de captura de dados em variaveis:
 
  - <b> And capture o valor do campo "Celular" e armazene na variavel "varCelular" </b> -> Usa o valor preenchido de um campo e armazena em uma variavel para uso posterior;
+
+
+### Função de Auto Mapeamento de campos:
+
+- <b> And mapeei e retorne os comandos para preencher os inputs </b> -> Mapeeia toda a pagina atual em que o teste parou e retorna todos os comandos necessarios para preencher os campos da pagina, sejam eles inputs, checkbox, combobox, Datas e etc.(Não mapeia o campo padrão de pesquisa do Salesforce para evitar comandos errados na hora de editar ou criar um registro).
+
+
+<h4 align="left"> Pagina usada para auto mapear:
+  <p>
+  <img alt="exemplopage" title="#exemplopage" src="./assets/exemplopage.png"/>
+    </p>
+</h4>
+
+
+<h4 align="left"> Exemplo de codigo gerado no log:
+  <p>
+  <img alt="AutoMap" title="#AutoMap" src="./assets/AutoMap.png"/>
+    </p>
+</h4>
 
 
 ### Funções Simplificadas e Personalizadas:
@@ -186,6 +210,64 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
     </p>
 </h4>
 
+### Funções para testes de APIs:
+
+<p> Da mesma forma que nos testes WEB, para rodar os testes de API é necessario colocar a tag do teste na classe runner: RunTest</p>
+<p>É possivel mesclar testes WEB com os testes de API, para ganhos de desempenho na criação de registros ou validações do banco de dados do Salesforce.</p>
+
+#### pré condições (Given):
+
+- <b> Given que seja definido o header "Accept" com o valor "application/json" </b> -> Define os headers e valores que devem receber para configurar a requisição, tambem aceita variaveis previamente definidas no gherkin;
+- <b> And que seja adicionado os parametros "?api_key=teste&exemplo=teste" no endpoint "endpointHunter" </b> -> Define novos parametros para serem adicionados na URI armazenada no api.properties;
+
+- <b> And que seja definido o endpoint como "endpointHunter" </b> -> Define a URI da requisição, devendo ser configurada no arquivo api.properties, e passado aqui apenas o nome da variavel usada no arquivo .properties;
+
+<h4 align="left"> Arquivo api.properties:
+  <p>
+Valores como client_id, secret e URIs devem ser colocados nesse arquivo.
+  <img alt="apiProperties" title="#apiProperties" src="./assets/apiProperties.png" />
+    </p>
+</h4>
+
+- <b> And que seja definido o payload "testeHunter" </b> -> Define o body request da requisição, sendo ele definido no arquivo payloads.properties e passado aqui apenas o nome usado para guardar o body;
+
+<h4 align="left"> Arquivo payloads.properties:
+  <p>
+Valores como body request devem ser armazenados aqui(em formato JSON para APIs REST ou XML para APIs soap).
+  <img alt="payloads" title="#payloads" src="./assets/payloads.png" />
+    </p>
+</h4>
+
+
+
+#### Execução da requisição (When):
+
+- <b> When executar uma requisicao GET </b> -> Executa uma requisição do tipo GET;
+- <b> When executar uma requisicao POST </b> -> Executa uma requisição do tipo POST;
+- <b> When executar uma requisicao PUT </b> -> Executa uma requisição do tipo PUT;
+- <b> When executar uma requisicao PATCH </b> -> Executa uma requisição do tipo PATCH;
+- <b> When executar uma requisicao DELETE </b> -> Executa uma requisição do tipo DELETE;
+
+
+#### Validação da Resposta e teste (Then):
+
+- <b> Then espero receber um response code "200" </b> -> Valida o response code recebido após o envio da requisição;
+- <b> And armazene o valor do campo de response body "data.leads[0].id" na variavel "varNameTeste" </b> -> Armazena qualquer valor do RESPONSE BODY em uma variavel nova.
+- <b> And espero que o campo "data.leads[0].id" do response body esteja com o valor de "(\d*)" </b> -> Valida qualquer valor do RESPONSE BODY baseado no campo mapeado, usa uma validação por REGEX, para validar campos que retornem valores fixos ou dinamicos, como datas, por exemplo.
+- <b> And espero que nao exista o valor "teste" no body response </b> -> Valida que o valor não exista no RESPONSE BODY;
+
+
+#### Função de simplificar o teste de API:
+
+- <h4> Caso seu teste de API esteja ficando grande demais, é possivel diminuir ele em apenas 1 step assim como no teste WEB:</h4>
+
+- <b>And simplifique o teste de API </b>-> Simplifica o teste de API, pegando todos os steps e gerando o codigo necessario para testa-lo em apenas um metodo ou step;
+  <h4 align="left"> Exemplo de codigo gerado no log:
+  <p>
+  <img alt="apiSimplificado" title="#apiSimplificado" src="./assets/apiSimplificado.png" />
+    </p>
+</h4>
+
 ### Personalizar Codigo para teste:
  
  <p><b> Caso precise personalizar codigo para testar outras aplicações ou funções não cobertas pelo Framework, siga os passos abaixo para melhorar a eficacia dos seus testes personalizados: </b></p>
@@ -211,6 +293,24 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
     </p>
 </h4>
 
+### Geração de Relatorios no ExtentReports:
+
+ <p><b> Os Relatorios são gerados a cada teste com sua data e capturas de tela, afim de manter um historico de execuções, podendo ser personalizado no arquivo extent.properties </b></p>
+
+- <b> captureScreenshotAndAddToReport("mensagem de log");</b> -> utilize esse comando de qualquer lugar nas pastas de stepDefinition para criar novos prints e serem adicionados ao relatorio final;
+
+
+<h4 align="left"> Local de geração dos relatorios:
+  <p>
+  <img alt="sparkReport" title="#sparkReport" src="./assets/sparkReport.png" />
+    </p>
+</h4>
+
+<h4 align="left"> Exemplo de relatorio gerado:
+  <p>
+  <img alt="reportExemplo" title="#reportExemplo" src="./assets/reportExemplo.png" />
+    </p>
+</h4>
 
 ## 🛠 Tecnologias
 
