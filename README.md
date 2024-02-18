@@ -22,7 +22,9 @@ Tabela de conteúdos
       * [Funções](#funções)
       * [Funções pré definidas](#funções-pré-definidas-do-gherkin)
       * [Funções personalizadas](#funções-simplificadas-e-personalizadas)
+      * [Funções para testes de APIs](#funções-para-testes-de-apis)
       * [Personalizar Codigo](#personalizar-codigo-para-teste)
+      * [Geração de Relatorios no ExtentReports](#geração-de-relatorios-no-extentreports)
    * [Tecnologias](#-tecnologias)
    * [Autoria](#autor)
 <!--te-->
