@@ -29,7 +29,7 @@ public class AppsPO {
     public By naoRegistraCelular = By.xpath("//a[text()=\"I Don't Want to Register My Phone\" or text()='Não desejo registrar meu celular']");
     public By appLauncher = By.xpath("//*[contains(@class,\"appLauncher\")]//button");
     public By inputSearchApp = By.xpath("//input[@placeholder='Pesquisar aplicativos e itens…' or @placeholder='Search apps and items...']");
-    public By btnChangeViewMode = By.xpath("//button[contains(@title,'Display as')or contains(@title,'Exibir como')]");
+    public By btnChangeViewMode = By.xpath("//button[contains(@title,'Display as')or contains(@title,'Exibir como') or contains(@title,'Select list display') or contains(@title,'Selecionar exibição de lista')]");
     public By btnChangeToTableView = By.xpath("//a/span[text()='Table' or text()='Tabela']");
     public By currentViewMode = By.xpath("//button[@title='Display as Table' or @title='Exibir como Tabela']");
 
@@ -39,17 +39,16 @@ public class AppsPO {
     }
 
     public By extractTTextFromFields(String field) {
-        return By.xpath("//*[@field-label='" + field + "']//slot//*[text()]");
+        return By.xpath("//*[@field-label='" + field + "']//slot//*[text()] | //*[contains(@class,\"test-id__field-label\") and text()='" + field + "']//ancestor::div[contains(@class,'slds-form-element_readonly')]//*[contains(@class,'field-value ')]/*[text()]");
+
+        //
     }
 
-    public By extractTTextFromFieldsSpan(String field) {
-        return By.xpath("//*[contains(@class,\"test-id__field-label\") and text()='" + field + "']//ancestor::div[contains(@class,'slds-form-element_readonly')]//*[contains(@class,'field-value ')]/*[text()]");
-    }
 
     public By createNewObj = By.xpath("//a[@title='New' or @title='Criar' or contains(@title,\"Nova\") or contains(@title,\"Novo\")or contains(@title,\"New\")]");
 
-    public By btnSave = By.xpath("//button[text()='Salvar' or text()='Save' or @title='Salvar' or @title='Save']");
-    public By btnSaveModal = By.xpath("//footer//span[text()='Salvar' or text()='Save' or @title='Salvar' or @title='Save']//parent::button");
+    public By btnSave = By.xpath("//button[text()='Salvar' or text()='Save' or @title='Salvar' or @title='Save'] | //footer//span[text()='Salvar' or text()='Save' or @title='Salvar' or @title='Save']//parent::button");
+
 
     //recupera o elemento de texto clicavel por javaScript
     public By spanFields(String text) {
@@ -68,14 +67,8 @@ public class AppsPO {
 
     // campos de input da criação de objetos
     public By recordCreationFields(String inputName) {
-        return By.xpath("//input[@id=//label[text()='" + inputName + "']/@for]");
+        return By.xpath("//input[@id=//label[text()='" + inputName + "']/@for] | //input[@id=//span[text()='" + inputName + "']//parent::label/@for] | //textarea[@id=//span[text()='" + inputName + "']//parent::label/@for] | //textarea[@id=//label[text()='" + inputName + "']//parent::label/@for]");
     }
-
-    // campos de input da criação de objetos com a variação de html
-    public By recordCreationFieldsSpan(String inputName) {
-        return By.xpath("//input[@id=//span[text()='" + inputName + "']//parent::label/@for]");
-    }
-
 
     // checkbox de input da criação de objetos
     public By checkboxCreationFields(String inputName) {
@@ -84,17 +77,12 @@ public class AppsPO {
 
     // campos de input da criação de objetos
     public By textAreaRecordCreationFields(String inputName) {
-        return By.xpath("//textarea[@id=//span[text()='" + inputName + "']//parent::label/@for]");
+        return By.xpath("//textarea[@id=//span[text()='" + inputName + "']//parent::label/@for] | //textarea[@id=//label[text()='" + inputName + "']//parent::label/@for]");
     }
 
     // campos de comboBox da criação de objetos
     public By comboBoxCreationFields(String inputName) {
-        return By.xpath("//button[@id=//label[text()='" + inputName + "']/@for]");
-    }
-
-    // campos de comboBox da criação de objetos
-    public By comboBoxLinkCreationFields(String inputName) {
-        return By.xpath("//a[@aria-describedby=//span[text()='" + inputName + "']/@id]");
+        return By.xpath("//button[@id=//label[text()='" + inputName + "']/@for] | //a[@aria-describedby=//span[text()='" + inputName + "']/@id] | //select[@id=//label[text()='" + inputName + "']/@for]");
     }
 
     // Campo clicavel de opção do comboBox a partir do texto visivel em tela, utilizado em campos combobox
@@ -109,12 +97,7 @@ public class AppsPO {
 
     // Campo clicavel de opção do comboBox a partir do texto visivel em tela, utilizado em campos de pesquisa de objetos dentro da criação de registro
     public By resultSearchObjRelated(String valuetext) {
-        return By.xpath("//lightning-base-combobox-formatted-text[@title='" + valuetext + "']");
-    }
-
-    // Campo clicavel de opção do comboBox a partir do texto visivel em tela, utilizado em campos de pesquisa de objetos dentro da criação de registro
-    public By resultSearchObjRelatedByDiv(String valuetext) {
-        return By.xpath("//div[@title='" + valuetext + "']//ancestor::a[@role='option']");
+        return By.xpath("//lightning-base-combobox-formatted-text[@title='" + valuetext + "'] | //div[@title='" + valuetext + "']//ancestor::a[@role='option']");
     }
 
 

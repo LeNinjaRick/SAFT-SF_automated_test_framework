@@ -3,12 +3,12 @@
 Feature: teste framework
 
   Background: tempo de espera medio
-    Given que o tempo de espera medio sera de 15 segundos
+    Given que o tempo de espera medio sera de 10 segundos
     And que a variavel "varNomeOportunidade" tenha o valor "oportunidade Random"
 
   @webteste
   Scenario: teste em ingles de criação e validacao de contas
-    Given que o tempo de espera medio sera de 20 segundos
+    Given que o tempo de espera medio sera de 5 segundos
     And que esteja logado no SalesForce com sucesso com o usuario "Gerente"
     When Accesar o objeto "Accounts" e criar um novo registro
     And preencher o campo "Account Name" com o valor "testeConta Random"
@@ -17,20 +17,24 @@ Feature: teste framework
     Then Salvar a criacao do registro com sucesso
 
 
-  @webteste2
+  @webtesteAutoMapeamento
   Scenario: teste em portugues de criação e validacao de contas
+    Given que o tempo de espera medio sera de 5 segundos
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
-    #When Accesar o objeto "Casos" e mudar o modo de exibicao da lista para "Meus casos"
     When Accesar o objeto "Contatos" e criar um novo registro
-    And mapeei e retorne os comandos para preencher os inputs
-    #And criar oportunidade
-    #And preencher o campo "Nome da conta" com o valor "testeConta Random"
-   # And preencher o campo "Classificação" com o valor "Hot"
-   # And preencher o campo "Conta pai" com o valor "Postman"
-   # And preencher o campo "SLA" com o valor "Gold"
-   # And preencher o campo "SLA Serial Number" com o valor "1234Random"
-    #Then Salvar a criacao do registro com sucesso
-   # And simplifique o teste de preenchimento
+   # And mapeei e retorne os comandos para preencher os inputs
+    And crie o registro com os dados retornados de mapeamento
+
+    @webTesteEdicao
+    Scenario: teste em portugues de criação e validacao de contas
+      Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
+      When acessar o registro hexadecimal "5008b00002PCxQXAA1" pela url
+      Then espero que o campo "Prioridade" esteja com o valor "Medium"
+      And espero que o campo "Nome do contato" esteja com o valor "Andy Young"
+      And espero que o campo "Telefone do contato" esteja com o valor "^(.*)$"
+      And edite o campo "Origem do caso" com o valor "Phone"
+      And edite o campo "Status" com o valor "Escalated"
+      And salve a edicao do registro
 
   @webteste2simp
   Scenario: teste simplificado
@@ -71,6 +75,7 @@ Feature: teste framework
     And espero que o campo "Level" esteja com o valor "Primary"
     And edite o campo "Telefone residencial" com o valor da variavel "varCelular"
     And edite o campo "Departamento" com o valor "testeValor"
+    And salve a edicao do registro
     And simplifique o teste de validacao
 
     #exemplo de teste completo longo, passando por todas as etapas sem simplificar

@@ -10,22 +10,17 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pom.AppsPO;
 import pom.AutoMapPO;
 import web.AppsActions;
 import web.SetupActions;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import static hooks.Hook.captureScreenshotAndAddToReport;
 import static stepDefinitions.APIStepDefinition.varApiNameArray;
 import static stepDefinitions.APIStepDefinition.varApiValuesArray;
-import static web.ActionUtils.clickjs;
-import static web.ActionUtils.isElementoPresente;
 
 public class WebStepDefinition extends ConfigFramework {
 
@@ -94,6 +89,7 @@ public class WebStepDefinition extends ConfigFramework {
         SetupActions.controlCookies();
         getBrowser().get(url);
         setupActions.realizarLogin(user);
+        captureScreenshotAndAddToReport("User logged in successfully");
     }
 
     @Given("que o tempo de espera medio sera de {int} segundos")
@@ -112,6 +108,7 @@ public class WebStepDefinition extends ConfigFramework {
         appsActions.searchApp(app);
         appsActions.changeViewMode();
         appsActions.createObject();
+        captureScreenshotAndAddToReport("Record creation");
     }
 
     @And("preencher o campo {string} com o valor {string}")
@@ -131,6 +128,7 @@ public class WebStepDefinition extends ConfigFramework {
         appsActions.saveObjCreated();
         setTestType("positivo");
         Assert.assertFalse("Não foi possivel salvar o registro por decorrencia de erro no preenchimento", appsActions.validateErrorsInRecordCreation());
+        captureScreenshotAndAddToReport("Record saved successfully");
     }
 
     @Then("Salvar a criacao do registro com falha")
@@ -138,11 +136,13 @@ public class WebStepDefinition extends ConfigFramework {
         appsActions.saveObjCreated();
         setTestType("negativo");
         Assert.assertTrue("O erro na criação de registro não apareceu!", appsActions.validateErrorsInRecordCreation());
+        captureScreenshotAndAddToReport("Failed record creation test successful");
     }
 
     @And("busca pela mensagem de erro {string}")
     public void buscaPelaMensagemDeErro(String error) {
         Assert.assertTrue("O erro procurado não foi encontrado em tela!", appsActions.validateTextErrors(error));
+        captureScreenshotAndAddToReport("Error message found");
     }
 
     @When("acessar o registro {string}")
@@ -271,7 +271,6 @@ public class WebStepDefinition extends ConfigFramework {
     public void clicarNaAcaoDeCriarUm(String action) {
         actionsRecordArray.add(action);
         appsActions.executeFlowAction(action);
-
     }
 
     @And("clicar no botao pelo texto {string}")
@@ -288,6 +287,7 @@ public class WebStepDefinition extends ConfigFramework {
         } else {
             getBrowser().get(url + hexa);
         }
+        captureScreenshotAndAddToReport("Record accessed");
     }
 
     @And("entrar no frame pelo xpath {string}")
@@ -305,5 +305,10 @@ public class WebStepDefinition extends ConfigFramework {
     @And("mapeei e retorne os comandos para preencher os inputs")
     public void mapeeiERetorneOsComandosParaPreencherOsInputs() {
         AutoMapPO.showComandsToFillInput();
+    }
+
+    @And("salve a edicao do registro")
+    public void salveAEdicaoDoRegistro() {
+        appsActions.saveEdit();
     }
 }

@@ -6,15 +6,21 @@ import configUtils.Drivers;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.chrome.ChromeOptions;
 import stepDefinitions.APIStepDefinition;
 import stepDefinitions.WebStepDefinition;
 
-import static configUtils.ConfigFramework.setBrowser;
 import static configUtils.Drivers.abrirBrowser;
 import static stepDefinitions.APIStepDefinition.*;
 
 public class Hook {
+    public static Scenario scenario;
+
+    public static Scenario getScenario() {
+        return scenario;
+    }
 
     public static void iniciarWeb() {
         String userProfile = "C:\\Users\\" + System.getenv("USERNAME") + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\";
@@ -30,6 +36,7 @@ public class Hook {
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--incognito");
         options.setAcceptInsecureCerts(true);
+        //Se teste = hedless, colocar o terceiro parametro como "nao":
         abrirBrowser("chrome", options, "sim");
     }
 
@@ -64,12 +71,27 @@ public class Hook {
 
 
     @Before
-    public void init() {
-        clearArrays();
+    public void init(Scenario scenario) {
+        Hook.scenario = scenario;
+        clearArrays(); // Clears all arrays used in previous tests
+    }
+
+
+    public static void captureScreenshotAndAddToReport(String message) {
+        try {
+            getScenario().log(message);
+            byte[] screenshot = ((TakesScreenshot) ConfigFramework.getBrowser()).getScreenshotAs(OutputType.BYTES);
+            getScenario().attach(screenshot, "image/png", "Screenshot");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @After
     public void cleanUp(Scenario scenario) {
+        if(scenario.isFailed()) {
+            captureScreenshotAndAddToReport("Evidence of error at the end of the test");
+        }
         Drivers.closeDriver(ConfigFramework.getBrowser());
     }
 }
