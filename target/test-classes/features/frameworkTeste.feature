@@ -22,19 +22,19 @@ Feature: teste framework
     Given que o tempo de espera medio sera de 5 segundos
     Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
     When Accesar o objeto "Contatos" e criar um novo registro
-   # And mapeei e retorne os comandos para preencher os inputs
+    And mapeei e retorne os comandos para preencher os inputs
     And crie o registro com os dados retornados de mapeamento
 
-    @webTesteEdicao
-    Scenario: teste em portugues de criação e validacao de contas
-      Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
-      When acessar o registro hexadecimal "5008b00002PCxQXAA1" pela url
-      Then espero que o campo "Prioridade" esteja com o valor "Medium"
-      And espero que o campo "Nome do contato" esteja com o valor "Andy Young"
-      And espero que o campo "Telefone do contato" esteja com o valor "^(.*)$"
-      And edite o campo "Origem do caso" com o valor "Phone"
-      And edite o campo "Status" com o valor "Escalated"
-      And salve a edicao do registro
+  @webTesteEdicao
+  Scenario: teste em portugues de criação e validacao de contas
+    Given que esteja logado no SalesForce com sucesso com o usuario "CEO"
+    When acessar o registro hexadecimal "5008b00002PCxQXAA1" pela url
+    Then espero que o campo "Prioridade" esteja com o valor "Medium"
+    And espero que o campo "Nome do contato" esteja com o valor "Andy Young"
+    And espero que o campo "Telefone do contato" esteja com o valor "^(.*)$"
+    And edite o campo "Origem do caso" com o valor "Phone"
+    And edite o campo "Status" com o valor "Escalated"
+    And salve a edicao do registro
 
   @webteste2simp
   Scenario: teste simplificado

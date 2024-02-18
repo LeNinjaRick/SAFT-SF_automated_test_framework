@@ -18,6 +18,8 @@ import static stepDefinitions.WebStepDefinition.*;
 
 public class APIStepDefinition {
 
+
+    public static String uri;
     public static List<String> jsonPathArray = new ArrayList<String>();
     public static StringBuilder dataParams = new StringBuilder();
 
@@ -117,6 +119,7 @@ public class APIStepDefinition {
     @Given("^que seja definido o endpoint como \"([^\"]*)\"$")
     public void queSejaDefinidoOEndpointComo(String endpoint) {
         PropertiesManager pm = new PropertiesManager("src/test/resources/properties/api.properties");
+        uri = endpoint;
         ApiUtils.setEndpoint(pm.getProps().getProperty(endpoint));
     }
 
@@ -135,9 +138,10 @@ public class APIStepDefinition {
     @Given("^que seja adicionado os parametros \"([^\"]*)\" no endpoint \"([^\"]*)\"$")
     public void queSejaAdicionadoOsParametrosNoEndpoint(String param, String endpoint) {
         PropertiesManager pm = new PropertiesManager("src/test/resources/properties/acl.properties");
-        String uri = pm.getProps().getProperty(endpoint);
-        uri = (uri + param);
-        ApiUtils.setEndpoint(uri);
+        uri = endpoint;
+        String url = pm.getProps().getProperty(endpoint);
+        url = (url + param);
+        ApiUtils.setEndpoint(url);
     }
 
     @Then("^espero que a body response possua \"([^\"]*)\" \"([^\"]*)\", \"([^\"]*)\" \"([^\"]*)\" e \"([^\"]*)\" \"([^\"]*)\"$")
@@ -188,7 +192,7 @@ public class APIStepDefinition {
     @And("simplifique o teste de API")
     public void simplifiqueOTesteDeAPI() {
         System.out.println("#-------------------------------------------------------------------------------------------#");
-        System.out.println("Para criar um Step simplificado dos steps fornecidos de busca e validação de registro, \n crie um step no gherkin de sua preferencia(exemplo: 'Given que seja feito o teste de API de geracao de protocolo') \n e depois no step definition, adicione o codigo abaixo: \n");
+        System.out.println("Para criar um Step simplificado dos steps fornecidos de teste de API, \n crie um step no gherkin de sua preferencia(exemplo: 'Given que seja feito o teste de API de geracao de protocolo') \n e depois no step definition, adicione o codigo abaixo: \n");
         System.out.println("\n *** Adicione o codigo abaixo no metodo de stepDefinition: *** \n");
         PropertiesManager pm = new PropertiesManager("src/test/resources/properties/api.properties");
         for (int i = 0; i < headersNames.size(); i++) {
@@ -207,7 +211,7 @@ public class APIStepDefinition {
             }
         }
         System.out.println("PropertiesManager pm = new PropertiesManager(\"src/test/resources/properties/api.properties\")");
-        System.out.println("ApiUtils.setEndpoint(pm.getProps().getProperty(\""+getEndpoint()+"\"));");
+        System.out.println("ApiUtils.setEndpoint(pm.getProps().getProperty(\""+uri+"\"));");
         System.out.println("ApiUtils.request"+getRequestType().toUpperCase()+"();");
 
         if (!getExpectedCode().isEmpty()) {
@@ -223,6 +227,7 @@ public class APIStepDefinition {
             if (jsonPathArray.size() > i) {
                 System.out.println("String data = getResponse().jsonPath().get(\"" + jsonPathArray.get(i) + "\").toString();\n");
             }
+            System.out.println("Define o nome da variavel que vai ser guardada, mude conforme contexto:");
             System.out.println("varApiNameArray.add(\"" + varApiNameArray.get(i) + "\");\n");
             System.out.println("varApiValuesArray.add(data);\n");
         }
