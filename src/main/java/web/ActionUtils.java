@@ -9,6 +9,9 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ActionUtils extends ConfigFramework {
 
@@ -17,21 +20,67 @@ public class ActionUtils extends ConfigFramework {
         driver.manage().window().maximize();
     }
 
-    public static Wait esperaFluente(WebDriver driver, int seconds) {
-        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                .withTimeout(Duration.ofSeconds(seconds))
-                .pollingEvery(Duration.ofSeconds(seconds / 2))
-                .ignoring(NoSuchElementException.class);
-        return wait;
+    private static void scrollIntoView(WebDriver driver, WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' });", element);
     }
 
-    public static boolean isElementoPresente(WebDriver driver, By by, int tempoEspera) {
+    private static Wait<WebDriver> fluentWait(WebDriver driver, int seconds){
+        return new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(seconds))
+                .pollingEvery(Duration.ofMillis(100))
+                .ignoring(org.openqa.selenium.NoSuchElementException.class);
+    }
+    public static WebElement fluentWaitElementPresent(WebDriver driver, By locator, int seconds) {
+        Wait<WebDriver> wait = fluentWait(driver,seconds);
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
+    public static WebElement fluentWaitClickableElementWithScroll(WebDriver driver, By locator, int seconds) {
+        Wait<WebDriver> wait = fluentWait(driver,seconds);
+        return wait.until(webDriver -> {
+            WebElement element = webDriver.findElement(locator);
+            scrollIntoView(webDriver, element);
+            if (element.isDisplayed()) {
+                return wait.until(ExpectedConditions.elementToBeClickable(locator));
+            } else {
+                scrollToElement(driver, locator, seconds);
+                return null; // keep waiting
+            }
+        });
+    }
+
+    public static WebElement fluentWaitVisibleElementWithScroll(WebDriver driver, By locator, int seconds) {
+        Wait<WebDriver> wait = fluentWait(driver,seconds);
+        return wait.until(webDriver -> {
+            WebElement element = webDriver.findElement(locator);
+            scrollIntoView(webDriver, element);
+            if (element.isDisplayed()) {
+                return element;
+            } else {
+                scrollToElement(driver, locator, seconds);
+                return null; // keep waiting
+            }
+        });
+    }
+
+
+    public static List<WebElement> fluentWaitArray(WebDriver driver, By by, int seconds) {
+        Wait<WebDriver> wait = fluentWait(driver,seconds);
+        try {
+            return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(by));
+        } catch (Exception e) {
+            System.out.println("Os elementos não foram encontrados dentro do tempo limite.");
+            return Collections.emptyList();  // Retorna uma lista vazia
+        }
+    }
+
+
+    public static boolean isElementoPresente(WebDriver driver, By by, int seconds) {
         boolean isPresente;
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(tempoEspera));
-            wait.until(ExpectedConditions.presenceOfElementLocated(by));
-            WebElement element = driver.findElement(by);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoViewIfNeeded(true);", element);
+            WebElement element = fluentWaitElementPresent(driver, by, seconds);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
             isPresente = true;
         } catch (Exception e) {
             isPresente = false;
@@ -39,12 +88,16 @@ public class ActionUtils extends ConfigFramework {
         return isPresente;
     }
 
-    public static boolean isElementoVisivel(WebDriver driver, By by, int tempoEspera) {
+    public static String getAtributteOfWebElement(WebDriver driver, By by, String attribute, int time) {
+        WebElement element = fluentWaitVisibleElementWithScroll(driver, by, time);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoViewIfNeeded(true);", element);
+        return element.getAttribute(attribute);
+    }
+
+    public static boolean isElementoVisivel(WebDriver driver, By by, int time) {
         boolean isVisivel;
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(tempoEspera));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
-            WebElement element = driver.findElement(by);
+            WebElement element = fluentWaitVisibleElementWithScroll(driver, by, time);
             Assert.assertTrue(element.isDisplayed());
             isVisivel = true;
         } catch (Exception e) {
@@ -53,16 +106,10 @@ public class ActionUtils extends ConfigFramework {
         return isVisivel;
     }
 
-    public static void clickjs(WebDriver driver, By locator, int tempoEspera) {
+    public static void clickjs(WebDriver driver, By locator, int time) {
         try {
-            WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(tempoEspera));
-            wait1.until(ExpectedConditions.presenceOfElementLocated(locator));
-            wait1.until(ExpectedConditions.elementToBeClickable(locator));
-            wait1.until(ExpectedConditions.visibilityOfElementLocated(locator));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(tempoEspera / 2));
-            WebElement element = driver.findElement(locator);
+            WebElement element = fluentWaitClickableElementWithScroll(driver, locator, time);
             JavascriptExecutor jse = (JavascriptExecutor) driver;
-            jse.executeScript("arguments[0].scrollIntoViewIfNeeded(true);", element);
             jse.executeScript("arguments[0].click();", element);
         } catch (Exception e) {
             System.err.println("Elemento " + locator + ", NAO detectado");
@@ -71,13 +118,9 @@ public class ActionUtils extends ConfigFramework {
         }
     }
 
-    public static void fillInputjs(WebDriver driver, By locator, String text, int tempoEspera) {
+    public static void fillInputjs(WebDriver driver, By locator, String text, int time) {
         try {
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(tempoEspera / 2));
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(tempoEspera));
-            wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-            WebElement element = driver.findElement(locator);
+            WebElement element = fluentWaitVisibleElementWithScroll(driver, locator, time);
             JavascriptExecutor jse = (JavascriptExecutor) driver;
             jse.executeScript("arguments[0].scrollIntoViewIfNeeded(true);", element);
             jse.executeScript("arguments[0].value='" + text + "'", element);
@@ -93,20 +136,6 @@ public class ActionUtils extends ConfigFramework {
         jse2.executeScript("window.scrollBy(0," + ammount + ")", "");
     }
 
-    public static int getExistingElement(WebDriver driver, By by, int tempoEspera) {
-        try {
-            WebElement aguardaElemento = (new WebDriverWait(driver, Duration.ofSeconds(tempoEspera)))
-                    .until(ExpectedConditions.presenceOfElementLocated((by)));
-            System.out.println("Elemento " + by + ", detectado");
-            return 1;
-        } catch (
-                Exception e) {
-            System.err.println("Elemento " + by + ", NAO detectado");
-            System.out.println("O elemento [{ " + by.toString() + "}] foi identificado com sucesso.");
-            return 0;
-            //##utilizar assert erro com msg##
-        }
-    }
 
     public static String getText(WebDriver driver, By by, int tempoEspera) {
         boolean isPresente = isElementoPresente(getBrowser(), by, tempoEspera);
@@ -135,7 +164,7 @@ public class ActionUtils extends ConfigFramework {
         }
     }
 
-    public static void implicitoWait(WebDriver driver, By by, int tempoEspera) {
+    public static void implicitWait(WebDriver driver, By by, int tempoEspera) {
         WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(tempoEspera));
         wait1.until(ExpectedConditions.presenceOfElementLocated(by));
         wait1.until(ExpectedConditions.elementToBeClickable(by));
@@ -145,9 +174,7 @@ public class ActionUtils extends ConfigFramework {
     public static WebElement fillInput(WebDriver driver, By by, String valor, int tempoEspera) {
         WebElement element = null;
         try {
-            //scrollToElement(driver, by, tempoEspera);
-            isElementoPresente(driver, by, tempoEspera);
-            element = driver.findElement(by);
+            element = fluentWaitClickableElementWithScroll(driver, by, tempoEspera);
             element.click();
             element.clear();
             element.sendKeys(valor.trim());
@@ -159,8 +186,10 @@ public class ActionUtils extends ConfigFramework {
         return element;
     }
 
+
     public static void scrollToElement(WebDriver driver, By by, int tempoEspera) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
         js.executeScript("window.scrollTo(0, -document.body.scrollHeight)");
         boolean isPresente = isElementoPresente(driver, by, tempoEspera);
         int i = 0;
@@ -174,19 +203,9 @@ public class ActionUtils extends ConfigFramework {
     }
 
 
-    public static void click(WebDriver driver, By by, int tempoEspera) {
+    public static void click(WebDriver driver, By by, int time) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(tempoEspera));
-            wait.until(ExpectedConditions.presenceOfElementLocated(by));
-            wait.until(ExpectedConditions.elementToBeClickable(by));
-        } catch (Exception e) {
-            System.err
-                    .println("Ação click, elemento - " + by + " não encontrado, " + "tempo de espera = " + tempoEspera + "s");
-            Assert.fail("Ação click, elemento - " + by + " não encontrado, " + "tempo de espera = " + tempoEspera + "s");
-        }
-        try {
-            WebElement element = driver.findElement(by);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoViewIfNeeded(true);", element);
+            WebElement element = fluentWaitClickableElementWithScroll(driver, by, time);
             element.click();
         } catch (Exception e) {
             System.err.println("Ação click, elemento - " + by + " interceptado, " + e);

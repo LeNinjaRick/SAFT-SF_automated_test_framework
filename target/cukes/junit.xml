@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="371.783">
-<testcase classname="teste framework" name="teste em portugues um fluxo de oportunidade de contrato" time="371.399">
-<system-out><![CDATA[Given que o tempo de espera medio sera de 15 segundos.......................passed
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="88.098">
+    <testcase classname="teste framework" name="teste em portugues de criação e validacao de contas" time="87.876">
+        <system-out>
+            <![CDATA[Given que o tempo de espera medio sera de 10 segundos.......................passed
 And que a variavel "varNomeOportunidade" tenha o valor "oportunidade Random".passed
+Given que o tempo de espera medio sera de 5 segundos........................passed
 Given que esteja logado no SalesForce com sucesso com o usuario "CEO".......passed
-When Accesar o objeto "Oportunidades" e criar um novo registro..............passed
-And clicar no checkbox "Particular".........................................passed
-And preencher o campo "Nome da oportunidade" com o valor da variavel "varNomeOportunidade".passed
-And preencher o campo "Data de fechamento" com o valor "27/04/2023".........passed
-And preencher o campo "Fase" com o valor "Qualification"....................passed
-And preencher o campo "Nome da conta" com o valor "testeConta Bdyxj"........passed
-And preencher o campo "Delivery/Installation Status" com o valor "In progress".passed
-Then Salvar a criacao do registro com sucesso...............................passed
-And simplifique o teste de preenchimento....................................passed
-And clicar na acao de criar um "Novo caso"..................................passed
-And preencher o campo "Nome do contato" com o valor "Andy Young"............passed
-And preencher o campo "Assunto" com o valor "teste de caso".................passed
-And preencher o campo "Status" com o valor "Working"........................passed
-And Salvar a criacao do registro com sucesso................................passed
-And simplifique o teste de preenchimento....................................passed
-]]></system-out>
-</testcase>
+When Accesar o objeto "Contatos" e criar um novo registro...................passed
+And crie o registro com os dados retornados de mapeamento...................passed
+]]>
+        </system-out>
+    </testcase>
 </testsuite>

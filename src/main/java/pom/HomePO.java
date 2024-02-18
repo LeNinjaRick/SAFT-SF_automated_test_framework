@@ -3,12 +3,15 @@ import configUtils.ConfigFramework;
 import org.openqa.selenium.By;
 import web.ActionUtils;
 
+import static pom.AppsPO.getWait;
+
+
 public class HomePO extends ConfigFramework {
-    private final By loginUser = By.xpath("//img[@title='User']//parent::span");
+    private By loginUser = By.xpath("//img[@title='User']//parent::span");
     public void validarLogin() {
-        if (!ActionUtils.isElementoPresente(getBrowser(), loginUser, 15)) {
+        if (!ActionUtils.isElementoPresente(getBrowser(), loginUser, getWait()/2)) {
             getBrowser().navigate().refresh();
         }
-        ActionUtils.isElementoPresente(getBrowser(), loginUser, 30);
+        ActionUtils.isElementoPresente(getBrowser(), loginUser, getWait());
     }
 }

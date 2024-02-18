@@ -4,21 +4,21 @@ import api.ApiUtils;
 import api.RegexMatcher;
 import configUtils.ConfigFramework;
 import configUtils.PropertiesManager;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
 import pom.AppsPO;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
-import java.util.regex.Pattern;
 
+import static configUtils.Drivers.abrirBrowser;
 import static pom.AppsPO.getWait;
 import static web.ActionUtils.*;
 
@@ -68,11 +68,6 @@ public class AppsActions extends ConfigFramework {
         clickjs(getBrowser(), appsPO.comboBoxOption(value), getWait());
     }
 
-    public void chooseValueInLinkComboBox(String comboBoxName, String value) {
-        clickjs(getBrowser(), appsPO.comboBoxLinkCreationFields(comboBoxName), getWait());
-        clickjs(getBrowser(), appsPO.genericLink(value), getWait());
-    }
-
 
     public void chooseParentObject(String fieldname, String result) {
         fillInput(getBrowser(), appsPO.recordCreationFields(fieldname), result, getWait());
@@ -80,11 +75,7 @@ public class AppsActions extends ConfigFramework {
     }
 
     public void saveObjCreated() {
-        if (isElementoPresente(getBrowser(), appsPO.btnSaveModal, getWait() / 2)) {
-            clickjs(getBrowser(), appsPO.btnSaveModal, getWait());
-        } else {
-            clickjs(getBrowser(), appsPO.btnSave, getWait());
-        }
+        clickjs(getBrowser(), appsPO.btnSave, getWait());
     }
 
     // Metodo que lê o tipo de campo antes de preencher, durante a criação de um registro novo
@@ -92,24 +83,11 @@ public class AppsActions extends ConfigFramework {
         value = value.replace("Random", ApiUtils.getRandomPass(5));
         if (isElementoPresente(getBrowser(), appsPO.recordCreationFields(fieldname), getWait())) {
             fillInput(getBrowser(), appsPO.recordCreationFields(fieldname), value, getWait());
-            if (isElementoPresente(getBrowser(), appsPO.resultSearchObjRelated(value), getWait() / 2)) {
+            if (isElementoPresente(getBrowser(), appsPO.resultSearchObjRelated(value), getWait() / 3)) {
                 clickjs(getBrowser(), appsPO.resultSearchObjRelated(value), getWait());
-            } else if (isElementoPresente(getBrowser(), appsPO.resultSearchObjRelatedByDiv(value), getWait() / 2)) {
-                clickjs(getBrowser(), appsPO.resultSearchObjRelatedByDiv(value), getWait());
-            }
-        } else if (isElementoPresente(getBrowser(), appsPO.recordCreationFieldsSpan(fieldname), getWait())) {
-            fillInput(getBrowser(), appsPO.recordCreationFieldsSpan(fieldname), value, getWait());
-            if (isElementoPresente(getBrowser(), appsPO.resultSearchObjRelated(value), getWait() / 2)) {
-                clickjs(getBrowser(), appsPO.resultSearchObjRelated(value), getWait());
-            } else if (isElementoPresente(getBrowser(), appsPO.resultSearchObjRelatedByDiv(value), getWait() / 2)) {
-                clickjs(getBrowser(), appsPO.resultSearchObjRelatedByDiv(value), getWait());
             }
         } else if (isElementoPresente(getBrowser(), appsPO.comboBoxCreationFields(fieldname), getWait())) {
             chooseValueInComboBox(fieldname, value);
-        } else if (isElementoPresente(getBrowser(), appsPO.comboBoxLinkCreationFields(fieldname), getWait())) {
-            chooseValueInLinkComboBox(fieldname, value);
-        } else if (isElementoPresente(getBrowser(), appsPO.textAreaRecordCreationFields(fieldname), getWait())) {
-            fillInputjs(getBrowser(), appsPO.textAreaRecordCreationFields(fieldname), value, getWait());
         } else {
             Assert.fail("Campo de preenchimento não presente na tela!");
         }
@@ -181,11 +159,15 @@ public class AppsActions extends ConfigFramework {
 
 
     public void editFields(String field, String value) {
-        clickjs(getBrowser(), appsPO.editFieldInObject(field), getWait());
+        if (isElementoPresente(getBrowser(), appsPO.editFieldInObject(field), getWait())) {
+            clickjs(getBrowser(), appsPO.editFieldInObject(field), getWait());
+        }
         fillField(field, value);
-        clickjs(getBrowser(), appsPO.btnSave, getWait());
     }
 
+    public void saveEdit() {
+        clickjs(getBrowser(), appsPO.btnSave, getWait());
+    }
 
     public void searchRecordUrl(String id) {
         String url = pm.getProps().getProperty("urlSalesForce");
@@ -196,19 +178,6 @@ public class AppsActions extends ConfigFramework {
     public void switchListView(String listView) {
         clickjs(getBrowser(), appsPO.btnListView, getWait());
         clickjs(getBrowser(), appsPO.listView(listView), getWait());
-    }
-
-    //12/12/2000
-    public void enterDateInField(String date) {
-        String day = date.substring(0, 1);
-        String month = date.substring(3, 4);
-        String year = date.substring(6, 9);
-        //select the year
-        Select select = new Select(getBrowser().findElement(appsPO.selectYearPrimitive));
-        select.selectByVisibleText(year);
-
-        //select the month
-
     }
 
     public void clickCheckbox(String checkBoxname) {
