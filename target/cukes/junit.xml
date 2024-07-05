@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="3.866">
-    <testcase classname="teste framework" name="cria leads hunter" time="3.6">
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="56.738">
+    <testcase classname="teste framework" name="pesquisar e validar um registro" time="56.542">
         <system-out>
             <![CDATA[Given que o tempo de espera medio sera de 10 segundos.......................passed
 And que a variavel "varNomeOportunidade" tenha o valor "oportunidade Random".passed
-Given que seja definido o header "Accept" com o valor "application/json"....passed
-And que seja definido o header "Content-Type" com o valor "application/json".passed
-And que seja definido o endpoint como "endpointHunter"......................passed
-And que seja definido o payload "testeHunter"...............................passed
-When executar uma requisicao POST...........................................passed
-Then espero receber um response code "201"..................................passed
-And armazene o valor do campo de response body "data.id" na variavel "varNameTeste".passed
-And espero que o campo "data.first_name" do response body esteja com o valor de "(.+)".passed
-And simplifique o teste de API..............................................passed
+Given que esteja logado no SalesForce com sucesso com o usuario "CEO".......passed
+When acessar o registro hexadecimal "0WO8b000000fQEFGA2" pela url...........passed
+And que esteja logado no SalesForce com sucesso com o usuario "Gerente".....passed
 ]]>
         </system-out>
     </testcase>
