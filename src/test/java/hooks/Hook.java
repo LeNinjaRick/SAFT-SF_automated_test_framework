@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import stepDefinitions.APIStepDefinition;
 import stepDefinitions.WebStepDefinition;
 
+import static configUtils.ConfigFramework.getBrowser;
 import static configUtils.Drivers.abrirBrowser;
 import static stepDefinitions.APIStepDefinition.*;
 
@@ -23,6 +24,7 @@ public class Hook {
     }
 
     public static void iniciarWeb() {
+        Drivers.closeDriver(getBrowser());
         String userProfile = "C:\\Users\\" + System.getenv("USERNAME") + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\";
         ChromeOptions options = new ChromeOptions();
         options.addArguments("user-data-dir=" + userProfile);
@@ -80,7 +82,7 @@ public class Hook {
     public static void captureScreenshotAndAddToReport(String message) {
         try {
             getScenario().log(message);
-            byte[] screenshot = ((TakesScreenshot) ConfigFramework.getBrowser()).getScreenshotAs(OutputType.BYTES);
+            byte[] screenshot = ((TakesScreenshot) getBrowser()).getScreenshotAs(OutputType.BYTES);
             getScenario().attach(screenshot, "image/png", "Screenshot");
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,6 +94,6 @@ public class Hook {
         if(scenario.isFailed()) {
             captureScreenshotAndAddToReport("Evidence of error at the end of the test");
         }
-        Drivers.closeDriver(ConfigFramework.getBrowser());
+        Drivers.closeDriver(getBrowser());
     }
 }
